@@ -270,6 +270,7 @@
     const AD_SERVE_RETRY_MS=1200;
     const AD_CREATIVE_QUEUE_MAX=5;
     const MAGSRV_SCRIPT_SRC='https://a.magsrv.com/ad-provider.js';
+    const MAGSRV_ZONE_ID='5934508';
     const ADSTERRA_CONTAINER_ID='container-ad24af0f09152765b1fc95cdf0c3982a';
     const ANALYTICS_FORM_URL='https://docs.google.com/forms/d/e/1FAIpQLSeGMo0At1UshdJUicNKL2h72FfTghZJZyCBjl9d2Yy3qPjTeg/formResponse';
     const ANALYTICS_FIELDS={
@@ -855,7 +856,7 @@
 
       const magsrv=document.createElement('ins');
       magsrv.className='eas6a97888e20';
-      magsrv.setAttribute('data-zoneid','5934224');
+      magsrv.setAttribute('data-zoneid',MAGSRV_ZONE_ID);
       slot.appendChild(magsrv);
       const serveMagsrv=()=>{(window.AdProvider=window.AdProvider||[]).push({"serve":{}})};
       const retryServe=()=>{
@@ -1013,7 +1014,7 @@
       slot.dataset.promoMounted='1';
       const magsrv=document.createElement('ins');
       magsrv.className='eas6a97888e20';
-      magsrv.setAttribute('data-zoneid','5934224');
+      magsrv.setAttribute('data-zoneid',MAGSRV_ZONE_ID);
       slot.appendChild(magsrv);
       const serveMagsrv=()=>{(window.AdProvider=window.AdProvider||[]).push({"serve":{}})};
       const retryServe=()=>{
