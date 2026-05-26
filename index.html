@@ -72,8 +72,9 @@
     #blocked{position:fixed;inset:0;background:var(--bg);z-index:9998;display:none;align-items:center;justify-content:center;text-align:center;padding:2.5rem}
     #blocked h2{color:var(--primary);font-size:1.5rem;margin-bottom:0.9375rem}
     #blocked p{color:rgba(255,255,255,0.6)}
-    #app{height:100vh;height:100svh;width:100%;overflow-y:scroll;scroll-snap-type:y mandatory;scroll-behavior:smooth;display:none;position:relative}
-    .reel{width:100%;height:100vh;height:100svh;scroll-snap-align:start;position:relative;display:flex;align-items:center;justify-content:center;background:#000;overflow:hidden}
+    #app{height:100vh;height:100svh;width:100%;overflow-y:scroll;scroll-snap-type:y mandatory;overscroll-behavior-y:contain;display:none;position:relative}
+    #app.scroll-locked{overflow:hidden!important;touch-action:none}
+    .reel{width:100%;height:100vh;height:100svh;scroll-snap-align:start;scroll-snap-stop:always;position:relative;display:flex;align-items:center;justify-content:center;background:#000;overflow:hidden}
     .reel-placeholder{background:#111;display:flex;align-items:center;justify-content:center}
     .spinner-mini{width:1.875rem;height:1.875rem;border:0.125rem solid rgba(255,255,255,0.1);border-top-color:var(--primary);border-radius:50%;animation:spin 1s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
@@ -117,6 +118,10 @@
     .promo-close{position:absolute;top:0.75rem;right:0.75rem;width:1.9rem;height:1.9rem;border:0;border-radius:50%;background:rgba(255,255,255,0.1);color:#fff;font-size:1.1rem;line-height:1;cursor:pointer}
     .promo-title{font-size:1.12rem;font-weight:800;margin:0.35rem 2rem 0.75rem}
     .promo-ad{min-height:15.625rem;margin:0 auto 1rem}
+    .promo-ad-pool{position:fixed;top:110vh;left:50%;transform:translateX(-50%);width:min(88vw,22rem);height:17.5rem;overflow:hidden;pointer-events:none;z-index:-1}
+    .promo-fallback{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.65rem;padding:1.5rem 1rem;min-height:15.625rem;width:100%;border-radius:1rem;background:linear-gradient(160deg,rgba(255,0,80,0.18),rgba(37,244,238,0.08));border:0.0625rem solid rgba(255,255,255,0.14)}
+    .promo-fallback strong{font-size:0.95rem;color:#fff}
+    .promo-fallback span{font-size:0.8rem;color:rgba(255,255,255,0.55)}
     .promo-progress{height:0.55rem;border-radius:999rem;background:rgba(255,255,255,0.13);overflow:hidden;margin:0.7rem 0 0.35rem}
     .promo-progress span{display:block;height:100%;width:0%;border-radius:inherit;background:linear-gradient(90deg,var(--primary),var(--accent));transition:width 0.18s linear}
     .promo-status{min-height:1.1rem;color:rgba(255,255,255,0.68);font-size:0.82rem}
@@ -225,6 +230,11 @@
     </div>
   </div>
 
+  <div id="promoAdPool" class="promo-ad-pool" aria-hidden="true">
+    <div class="ad-slot" id="promoAdWarmA"></div>
+    <div class="ad-slot" id="promoAdWarmB"></div>
+  </div>
+
   <div class="toast" id="toast"></div>
 
   <script>
@@ -251,11 +261,15 @@
       {u:"Komal",t:"vibe alag hi hai"}
     ];
 
-    let allVideos=[],filteredVideos=[],feedItems=[],currentFilter='current',currentVideoId=null,currentIndex=0,scrollListenerBound=false,reelObserver=null,likedVideos=JSON.parse(localStorage.getItem('liked')||'[]'),videoComments=JSON.parse(localStorage.getItem('comments')||'{}');
+    let allVideos=[],filteredVideos=[],feedItems=[],currentFilter='current',currentVideoId=null,currentIndex=0,scrollListenerBound=false,resizeListenerBound=false,reelObserver=null,likedVideos=JSON.parse(localStorage.getItem('liked')||'[]'),videoComments=JSON.parse(localStorage.getItem('comments')||'{}');
     const VIDEO_PRELOAD_AHEAD=2;
     const AD_INTERVAL_MIN=3;
     const AD_INTERVAL_MAX=5;
-    const AD_PRELOAD_AHEAD=2;
+    const AD_PRELOAD_AHEAD=5;
+    const AD_SERVE_RETRY_MAX=3;
+    const AD_SERVE_RETRY_MS=1200;
+    const AD_CREATIVE_QUEUE_MAX=5;
+    const MAGSRV_SCRIPT_SRC='https://a.magsrv.com/ad-provider.js';
     const ADSTERRA_CONTAINER_ID='container-ad24af0f09152765b1fc95cdf0c3982a';
     const ANALYTICS_FORM_URL='https://docs.google.com/forms/d/e/1FAIpQLSeGMo0At1UshdJUicNKL2h72FfTghZJZyCBjl9d2Yy3qPjTeg/formResponse';
     const ANALYTICS_FIELDS={
@@ -274,12 +288,29 @@
     let tapTimeout=null,lastTapAt=0,lastTapSide='',lastTapVideoId='';
     let entryTracked=false;
     let loadCycle=0,playRetryTimer=null,manuallyPausedVideoId=null;
-    let pendingDownload=null,downloadTimer=null,preparedDownloadUrl=null;
+    let pendingDownload=null,downloadTimer=null,preparedDownloadUrl=null,downloadSessionId=0,downloadProgressState=null;
+    const DOWNLOAD_MIN_MS=5000;
+    const PROMO_AD_FALLBACK_MS=8000;
+    let promoScrollLock=null,scrollSettleTimer=null;
+    let promoReadySlots={download:'promoAdWarmA',share:'promoAdWarmB'};
+    const promoFallbackTimers={};
+    const adCreativeQueue=[];
+    const adCreativeKeys=new Set();
     let audioMuted=localStorage.getItem('audioMuted')!=='false';
 
     function formatNum(n){if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(1)+'K';return n.toString()}
     function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
     function randomAdInterval(){return AD_INTERVAL_MIN+Math.floor(Math.random()*(AD_INTERVAL_MAX-AD_INTERVAL_MIN+1))}
+    function parseViewCount(value){
+      if(typeof value==='number'&&Number.isFinite(value))return value;
+      const raw=String(value||'').trim().toUpperCase().replace(/,/g,'');
+      const match=raw.match(/^(\d+(?:\.\d+)?)([KMB])?$/);
+      if(!match)return 0;
+      const num=parseFloat(match[1]);
+      const unit=match[2]||'';
+      const mult=unit==='M'?1e6:unit==='B'?1e9:unit==='K'?1e3:1;
+      return Math.round(num*mult);
+    }
     function parseSharedVideoId(){const p=new URLSearchParams(window.location.search);const v=p.get('v');return v?parseInt(v,10):null}
     function randomComments(){
       const pool=[...sampleComments].sort(()=>Math.random()-0.5);
@@ -375,7 +406,18 @@
       try{
         const res=await fetch('videos.json');
         allVideos=await res.json();
-        allVideos.forEach((v,i)=>{v.comments=randomComments();if(!v.type)v.type=i%2===0?'current':'most-viewed'});
+        allVideos.forEach((v)=>{
+          if(Array.isArray(v.comments)&&v.comments.length){
+            v.comments=v.comments.map((c)=>({
+              u:c.u||c.user||'User',
+              t:c.t||c.text||''
+            }));
+          }else{
+            v.comments=randomComments();
+          }
+          v.type=(v.type||v.category||'current').toLowerCase();
+          v._viewsNumeric=parseViewCount(v.views);
+        });
         hydrateSeoLinks();
 
         sharedVideoId=parseSharedVideoId();
@@ -395,7 +437,9 @@
         updateVideoBuffer();
         requestAnimationFrame(()=>scrollToCurrent(false));
         setupScrollListener();
+        setupResizeListener();
         setupIntersectionObserver();
+        initPromoAdPool();
         trackEntryEvent();
       }catch(e){showToast('Failed to load videos')}
     }
@@ -417,7 +461,11 @@
 
     function filterVideos(){
       filteredVideos=allVideos.filter(v=>v.type===currentFilter);
-      if(currentFilter==='current')filteredVideos=shuffle([...filteredVideos]);
+      if(currentFilter==='current'){
+        filteredVideos=shuffle([...filteredVideos]);
+      }else{
+        filteredVideos=[...filteredVideos].sort((a,b)=>(b._viewsNumeric||0)-(a._viewsNumeric||0));
+      }
       buildFeedItems();
       if(currentIndex>=feedItems.length)currentIndex=0;
     }
@@ -631,16 +679,17 @@
     }
 
     function preloadNextVideos(indexes,reelsByIndex,token){
-      const jobs=indexes.map((idx)=>{
-        if(!isActiveLoad(token))return Promise.resolve(false);
-        const reel=reelsByIndex.get(idx);
-        const video=reel?.querySelector('video');
-        const data=feedItems[idx]?.video;
-        if(!video||!data)return Promise.resolve(false);
-        ensureVideoLoaded(video,data,false);
-        return waitForVideoReady(video,token);
-      });
-      return Promise.all(jobs);
+      return indexes.reduce((chain,idx)=>{
+        return chain.then(()=>{
+          if(!isActiveLoad(token))return false;
+          const reel=reelsByIndex.get(idx);
+          const video=reel?.querySelector('video');
+          const data=feedItems[idx]?.video;
+          if(!video||!data)return false;
+          ensureVideoLoaded(video,data,false);
+          return waitForVideoReady(video,token);
+        });
+      },Promise.resolve(true)).then(()=>true);
     }
 
     function preloadUpcomingAds(){
@@ -659,24 +708,44 @@
       }
     }
 
+    function syncReelIndexFromScroll(){
+      const app=document.getElementById('app');
+      if(!app||promoScrollLock)return;
+      const reelHeight=app.clientHeight||window.innerHeight||1;
+      if(!reelHeight||!feedItems.length)return;
+      const maxIndex=Math.max(0,feedItems.length-1);
+      const snappedIndex=Math.max(0,Math.min(maxIndex,Math.round(app.scrollTop/reelHeight)));
+      const snappedTop=snappedIndex*reelHeight;
+      if(Math.abs(app.scrollTop-snappedTop)>1){
+        app.scrollTo({top:snappedTop,behavior:'auto'});
+      }
+      if(snappedIndex!==currentIndex){
+        currentIndex=snappedIndex;
+        updateVideoBuffer();
+      }
+    }
+
     function setupScrollListener(){
       if(scrollListenerBound)return;
       const app=document.getElementById('app');
-      let ticking=false;
-      app.addEventListener('scroll',()=>{
-        if(!ticking){
-          requestAnimationFrame(()=>{
-            const newIndex=Math.round(app.scrollTop/app.clientHeight);
-            if(newIndex!==currentIndex&&newIndex>=0&&newIndex<feedItems.length){
-              currentIndex=newIndex;
-              updateVideoBuffer();
-            }
-            ticking=false;
-          });
-          ticking=true;
-        }
-      });
+      const onSettle=()=>syncReelIndexFromScroll();
+      if('onscrollend' in window){
+        app.addEventListener('scrollend',onSettle);
+      }else{
+        app.addEventListener('scroll',()=>{
+          clearTimeout(scrollSettleTimer);
+          scrollSettleTimer=setTimeout(onSettle,150);
+        },{passive:true});
+      }
       scrollListenerBound=true;
+    }
+
+    function setupResizeListener(){
+      if(resizeListenerBound)return;
+      window.addEventListener('resize',()=>{
+        if(!promoScrollLock)scrollToCurrent(false);
+      });
+      resizeListenerBound=true;
     }
 
     function observeReels(){
@@ -687,19 +756,30 @@
 
     function setupIntersectionObserver(){
       if(reelObserver)return;
+      const app=document.getElementById('app');
       reelObserver=new IntersectionObserver((entries)=>{
         entries.forEach(e=>{
-          if(e.isIntersecting&&e.intersectionRatio>0.6){
-            if(e.target.classList.contains('ad-reel'))mountAdScripts(e.target);
-            const idx=parseInt(e.target.dataset.index,10);
-            if(!Number.isNaN(idx)&&idx!==currentIndex){
-              currentIndex=idx;
-              updateVideoBuffer();
-            }
-          }
+          if(e.isIntersecting&&e.target.classList.contains('ad-reel'))mountAdScripts(e.target);
         });
-      },{threshold:0.6});
+      },{root:app,threshold:[0.45,0.75]});
       observeReels();
+    }
+
+    function lockFeedScroll(){
+      const app=document.getElementById('app');
+      if(!app||promoScrollLock)return;
+      promoScrollLock={scrollTop:app.scrollTop};
+      app.classList.add('scroll-locked');
+    }
+
+    function unlockFeedScroll(){
+      const app=document.getElementById('app');
+      if(!promoScrollLock)return;
+      promoScrollLock=null;
+      if(app){
+        app.classList.remove('scroll-locked');
+        app.scrollTop=currentIndex*app.clientHeight;
+      }
     }
 
     function playCurrentVideo(token=loadCycle,attempt=0){
@@ -738,17 +818,31 @@
       playRetryTimer=setTimeout(()=>playCurrentVideo(token,attempt+1),Math.min(450+(attempt*350),1800));
     }
 
-    function loadExternalScript(src,attrs={},onload){
+    function loadExternalScript(src,attrs={},onload,onerror){
       const existing=[...document.scripts].find(script=>script.src===src);
       if(existing){
-        if(onload)setTimeout(onload,0);
+        if(existing.dataset.loadState==='loaded'){
+          if(onload)setTimeout(onload,0);
+        }else if(existing.dataset.loadState==='error'){
+          if(onerror)setTimeout(onerror,0);
+        }else{
+          if(onload)existing.addEventListener('load',onload,{once:true});
+          if(onerror)existing.addEventListener('error',onerror,{once:true});
+        }
         return existing;
       }
       const script=document.createElement('script');
       script.src=src;
       script.async=true;
       Object.entries(attrs).forEach(([key,value])=>script.setAttribute(key,value));
-      if(onload)script.onload=onload;
+      script.addEventListener('load',()=>{
+        script.dataset.loadState='loaded';
+        if(onload)onload();
+      },{once:true});
+      script.addEventListener('error',()=>{
+        script.dataset.loadState='error';
+        if(onerror)onerror();
+      },{once:true});
       document.body.appendChild(script);
       return script;
     }
@@ -764,7 +858,23 @@
       magsrv.setAttribute('data-zoneid','5934224');
       slot.appendChild(magsrv);
       const serveMagsrv=()=>{(window.AdProvider=window.AdProvider||[]).push({"serve":{}})};
-      loadExternalScript('https://a.magsrv.com/ad-provider.js',{type:'application/javascript'},serveMagsrv);
+      const retryServe=()=>{
+        let tries=0;
+        const run=()=>{
+          if(hasVisibleAdContent(slot))return;
+          if(!(window.AdProvider&&typeof window.AdProvider.push==='function'))return;
+          serveMagsrv();
+          tries++;
+          if(tries<AD_SERVE_RETRY_MAX){
+            setTimeout(run,AD_SERVE_RETRY_MS);
+          }
+        };
+        run();
+      };
+      if(window.AdProvider&&typeof window.AdProvider.push==='function'){
+        retryServe();
+      }
+      loadExternalScript(MAGSRV_SCRIPT_SRC,{type:'application/javascript'},retryServe);
 
       if(!document.getElementById(ADSTERRA_CONTAINER_ID)){
         const adsterra=document.createElement('div');
@@ -789,14 +899,179 @@
       multitag.async=true;
       multitag.referrerPolicy='no-referrer-when-downgrade';
       slot.appendChild(multitag);
+
+      setTimeout(()=>{
+        if(hasVisibleAdContent(slot))rememberAdCreative(slot);
+      },2200);
+
+      // If ad did not render, allow remount on next visibility/open.
+      setTimeout(()=>{
+        if(hasVisibleAdContent(slot)){
+          rememberAdCreative(slot);
+          return;
+        }
+        if(renderQueuedCreative(slot))return;
+        if(reel.dataset.index!==undefined){
+          reel.dataset.adMounted='';
+        }
+      },PROMO_AD_FALLBACK_MS);
     }
 
-    function mountPromoAd(){
-      const slot=document.getElementById('promoAdSlot');
+    function hasVisibleAdContent(slot){
+      if(!slot||!slot.children.length)return false;
+      if(slot.querySelector('.promo-fallback'))return true;
+      if(slot.querySelector('iframe,img,canvas,svg'))return true;
+      const filled=[...slot.querySelectorAll('ins')].some(el=>el.children.length>0||el.innerHTML.trim().length>0);
+      if(filled)return true;
+      const adsterra=slot.querySelector('[id^="container-"]');
+      if(adsterra&&adsterra.children.length>0)return true;
+      return false;
+    }
+
+    function extractAdCreative(slot){
+      if(!slot)return null;
+      const frames=[...slot.querySelectorAll('iframe[src]')].map((frame)=>({
+        t:'iframe',
+        src:frame.src
+      })).filter((item)=>!!item.src);
+      const images=[...slot.querySelectorAll('img[src]')].map((img)=>({
+        t:'img',
+        src:img.src
+      })).filter((item)=>!!item.src);
+      const nodes=[...frames,...images];
+      if(!nodes.length)return null;
+      const key=nodes.map((n)=>`${n.t}:${n.src}`).join('|');
+      return {key,nodes};
+    }
+
+    function rememberAdCreative(slot){
+      const creative=extractAdCreative(slot);
+      if(!creative||adCreativeKeys.has(creative.key))return false;
+      adCreativeQueue.unshift(creative);
+      adCreativeKeys.add(creative.key);
+      while(adCreativeQueue.length>AD_CREATIVE_QUEUE_MAX){
+        const dropped=adCreativeQueue.pop();
+        if(dropped)adCreativeKeys.delete(dropped.key);
+      }
+      return true;
+    }
+
+    function renderQueuedCreative(slot){
+      const creative=adCreativeQueue[0];
+      if(!slot||!creative||!creative.nodes?.length)return false;
+      slot.innerHTML='';
+      creative.nodes.forEach((node)=>{
+        if(node.t==='iframe'){
+          const iframe=document.createElement('iframe');
+          iframe.src=node.src;
+          iframe.loading='lazy';
+          iframe.referrerPolicy='no-referrer-when-downgrade';
+          iframe.allow='autoplay; encrypted-media';
+          iframe.style.width='100%';
+          iframe.style.height='100%';
+          iframe.style.border='0';
+          slot.appendChild(iframe);
+          return;
+        }
+        if(node.t==='img'){
+          const img=document.createElement('img');
+          img.src=node.src;
+          img.alt='Sponsored';
+          img.loading='lazy';
+          img.referrerPolicy='no-referrer';
+          img.style.maxWidth='100%';
+          img.style.maxHeight='100%';
+          img.style.objectFit='contain';
+          slot.appendChild(img);
+        }
+      });
+      return slot.children.length>0;
+    }
+
+    function showPromoFallback(slot){
+      if(!slot)return;
+      if(hasVisibleAdContent(slot)){
+        rememberAdCreative(slot);
+        return;
+      }
+      if(renderQueuedCreative(slot))return;
+      if(slot.querySelector('.promo-fallback'))return;
+      slot.innerHTML=`<div class="promo-fallback"><strong>Sponsored</strong><span>Thanks for supporting Desi Reels</span></div>`;
+    }
+
+    function schedulePromoFallback(slot,slotKey){
+      if(!slot)return;
+      clearTimeout(promoFallbackTimers[slotKey]);
+      promoFallbackTimers[slotKey]=setTimeout(()=>{
+        if(!hasVisibleAdContent(slot))showPromoFallback(slot);
+      },PROMO_AD_FALLBACK_MS);
+    }
+
+    function mountPromoAdNetworks(slot){
       if(!slot)return;
       slot.innerHTML='';
-      slot.dataset.adMounted='';
-      mountAdScripts(slot);
+      slot.dataset.promoMounted='1';
+      const magsrv=document.createElement('ins');
+      magsrv.className='eas6a97888e20';
+      magsrv.setAttribute('data-zoneid','5934224');
+      slot.appendChild(magsrv);
+      const serveMagsrv=()=>{(window.AdProvider=window.AdProvider||[]).push({"serve":{}})};
+      const retryServe=()=>{
+        let tries=0;
+        const run=()=>{
+          if(hasVisibleAdContent(slot))return;
+          if(!(window.AdProvider&&typeof window.AdProvider.push==='function'))return;
+          serveMagsrv();
+          tries++;
+          if(tries<AD_SERVE_RETRY_MAX){
+            setTimeout(run,AD_SERVE_RETRY_MS);
+          }
+        };
+        run();
+      };
+      if(window.AdProvider&&typeof window.AdProvider.push==='function'){
+        retryServe();
+      }
+      loadExternalScript(MAGSRV_SCRIPT_SRC,{type:'application/javascript'},retryServe);
+      setTimeout(()=>{
+        if(hasVisibleAdContent(slot))rememberAdCreative(slot);
+      },2200);
+    }
+
+    function warmPromoAd(slotId){
+      const slot=document.getElementById(slotId);
+      if(!slot)return;
+      slot.dataset.promoMounted='';
+      mountPromoAdNetworks(slot);
+      schedulePromoFallback(slot,slotId);
+    }
+
+    function initPromoAdPool(){
+      promoReadySlots={download:'promoAdWarmA',share:'promoAdWarmB'};
+      warmPromoAd('promoAdWarmA');
+      warmPromoAd('promoAdWarmB');
+    }
+
+    function takePromoAdForDisplay(context='share'){
+      const visible=document.getElementById('promoAdSlot');
+      if(!visible)return;
+      const slotId=promoReadySlots[context]||promoReadySlots.share;
+      const warm=document.getElementById(slotId);
+      const warmHasRealAd=!!(warm&&hasVisibleAdContent(warm)&&!warm.querySelector('.promo-fallback'));
+      visible.innerHTML='';
+      if(warmHasRealAd){
+        rememberAdCreative(warm);
+        while(warm.firstChild)visible.appendChild(warm.firstChild);
+      }else{
+        visible.dataset.promoMounted='';
+        mountPromoAdNetworks(visible);
+      }
+      schedulePromoFallback(visible,'promoAdSlot');
+      warmPromoAd(slotId);
+    }
+
+    function mountPromoAd(context='share'){
+      takePromoAdForDisplay(context);
     }
 
     function setupVideo(video,index){
@@ -983,20 +1258,26 @@
 
     function closePromo(e){
       if(e&&e.target.id!=='promoOverlay')return;
+      downloadSessionId++;
       document.getElementById('promoOverlay').classList.remove('show');
+      unlockFeedScroll();
       if(downloadTimer)clearInterval(downloadTimer);
       downloadTimer=null;
       if(pendingDownload?.controller)pendingDownload.controller.abort();
       if(preparedDownloadUrl)URL.revokeObjectURL(preparedDownloadUrl);
       pendingDownload=null;
       preparedDownloadUrl=null;
+      downloadProgressState=null;
+      const visible=document.getElementById('promoAdSlot');
+      if(visible)visible.innerHTML='';
     }
 
-    function openPromo(title,body){
+    function openPromo(title,body,context='share'){
       document.getElementById('promoTitle').textContent=title;
       document.getElementById('promoBody').innerHTML=body;
+      lockFeedScroll();
       document.getElementById('promoOverlay').classList.add('show');
-      requestAnimationFrame(mountPromoAd);
+      requestAnimationFrame(()=>mountPromoAd(context));
     }
 
     function getShareUrl(id){
@@ -1010,7 +1291,7 @@
           <button class="primary" onclick="copyShareLink('${shareUrl}')">Copy Link</button>
           <button onclick="openNativeShare('${shareUrl}')">More Share Options</button>
         </div>
-      `);
+      `,'share');
     }
 
     async function copyShareLink(url){
@@ -1066,44 +1347,110 @@
       showToast('Download started');
     }
 
-    async function prepareDownload(url,id,controller){
+    function updateDownloadUI(){
+      const bar=document.getElementById('downloadProgress');
+      const status=document.getElementById('downloadStatus');
+      if(!downloadProgressState)return;
+      const s=downloadProgressState;
+      const pct=Math.min(100,Math.max(s.timePct,s.fetchPct||0));
+      if(bar)bar.style.width=pct+'%';
+      if(!status)return;
+      if(s.saving){
+        status.textContent='Saving to your device…';
+      }else if(!s.minDone){
+        status.textContent=s.fetchDone?'Almost ready…':'Downloading…';
+      }else if(!s.fetchDone){
+        status.textContent='Finishing download…';
+      }else{
+        status.textContent='Almost ready…';
+      }
+    }
+
+    async function prepareDownload(url,controller,onProgress){
       try{
         const res=await fetch(url,{signal:controller.signal,cache:'force-cache'});
         if(!res.ok)throw new Error('download failed');
-        const blob=await res.blob();
-        if(controller.signal.aborted)return;
+        const len=parseInt(res.headers.get('Content-Length')||'0',10);
+        if(!res.body||!len||len<=0){
+          const blob=await res.blob();
+          if(controller.signal.aborted)return null;
+          preparedDownloadUrl=URL.createObjectURL(blob);
+          onProgress?.(100);
+          return preparedDownloadUrl;
+        }
+        const reader=res.body.getReader();
+        const chunks=[];
+        let loaded=0;
+        while(true){
+          const {done,value}=await reader.read();
+          if(controller.signal.aborted)return null;
+          if(done)break;
+          chunks.push(value);
+          loaded+=value.length;
+          onProgress?.(Math.min(99,Math.round((loaded/len)*100)));
+        }
+        const blob=new Blob(chunks,{type:res.headers.get('Content-Type')||'video/mp4'});
+        if(controller.signal.aborted)return null;
         preparedDownloadUrl=URL.createObjectURL(blob);
-      }catch(_){}
+        onProgress?.(100);
+        return preparedDownloadUrl;
+      }catch(_){
+        onProgress?.(100);
+        return null;
+      }
     }
 
-    function downloadVideo(url,id){
+    async function downloadVideo(url,id){
       closePromo();
+      const session=++downloadSessionId;
       const controller=new AbortController();
-      pendingDownload={url,id,controller};
+      pendingDownload={url,id,controller,session};
       preparedDownloadUrl=null;
-      openPromo('Preparing Download',`
+      downloadProgressState={timePct:0,fetchPct:0,fetchDone:false,minDone:false,saving:false};
+      openPromo('In Progress',`
         <div class="promo-progress"><span id="downloadProgress"></span></div>
-        <div class="promo-status" id="downloadStatus">Preparing your video...</div>
-      `);
-      prepareDownload(url,id,controller);
+        <div class="promo-status" id="downloadStatus">Downloading…</div>
+      `,'download');
 
       const startedAt=Date.now();
       downloadTimer=setInterval(()=>{
+        if(!pendingDownload||pendingDownload.session!==session)return;
         const elapsed=Date.now()-startedAt;
-        const pct=Math.min(100,(elapsed/10000)*100);
-        const bar=document.getElementById('downloadProgress');
-        const status=document.getElementById('downloadStatus');
-        if(bar)bar.style.width=pct+'%';
-        if(status)status.textContent=pct<100?'Please wait, download unlocks in 10 seconds...':'Starting download...';
-        if(pct>=100){
-          clearInterval(downloadTimer);
-          downloadTimer=null;
-          if(pendingDownload?.controller)pendingDownload.controller.abort();
-          const finalUrl=preparedDownloadUrl||url;
-          directDownload(finalUrl,id);
-          setTimeout(closePromo,500);
-        }
+        downloadProgressState.timePct=Math.min(90,(elapsed/DOWNLOAD_MIN_MS)*90);
+        if(elapsed>=DOWNLOAD_MIN_MS)downloadProgressState.minDone=true;
+        updateDownloadUI();
       },180);
+
+      const prefetchPromise=prepareDownload(url,controller,(pct)=>{
+        if(!downloadProgressState)return;
+        downloadProgressState.fetchPct=pct;
+        if(pct>=100)downloadProgressState.fetchDone=true;
+        updateDownloadUI();
+      }).then(blobUrl=>{
+        if(downloadProgressState){
+          downloadProgressState.fetchDone=true;
+          if(blobUrl)downloadProgressState.fetchPct=100;
+        }
+        return blobUrl;
+      });
+
+      await Promise.all([
+        new Promise(resolve=>setTimeout(resolve,DOWNLOAD_MIN_MS)),
+        prefetchPromise
+      ]);
+
+      if(!pendingDownload||pendingDownload.session!==session)return;
+      clearInterval(downloadTimer);
+      downloadTimer=null;
+      downloadProgressState.timePct=100;
+      downloadProgressState.minDone=true;
+      downloadProgressState.saving=true;
+      updateDownloadUI();
+      const finalUrl=preparedDownloadUrl||url;
+      directDownload(finalUrl,id);
+      setTimeout(()=>{
+        if(pendingDownload?.session===session)closePromo();
+      },500);
     }
 
     function showToast(m){
