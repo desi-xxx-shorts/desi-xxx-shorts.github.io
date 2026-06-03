@@ -317,7 +317,9 @@
       userAgent:'entry.69433868',
       meta:'entry.332204078'
     };
-    let sharedVideoId=null,sharedVideoTime=null;
+    const VALID_TABS=new Set(['desi','all','new']);
+    let sharedVideoId=null,sharedVideoTime=null,sharedVideoSource=null,sharedVideoTab=null;
+    let initStarted=false;
     let lowDataMode=localStorage.getItem(LOW_DATA_KEY)==='1';
     let hlsLibPromise=null;
     const videoHlsInstances=new WeakMap();
@@ -352,13 +354,29 @@
       const mult=unit==='M'?1e6:unit==='B'?1e9:unit==='K'?1e3:1;
       return Math.round(num*mult);
     }
+    function sourceTypeForVideo(video){
+      return (video?.source||'desi').toLowerCase();
+    }
     function parseSharedVideoParams(){
       const p=new URLSearchParams(window.location.search);
       const v=p.get('v');
       const t=p.get('t');
+      const type=p.get('type');
+      const tabRaw=(p.get('tab')||p.get('f')||p.get('filter')||'').toLowerCase();
       sharedVideoId=v?parseInt(v,10):null;
+      if(sharedVideoId!=null&&Number.isNaN(sharedVideoId))sharedVideoId=null;
       sharedVideoTime=t!=null&&t!==''&&!Number.isNaN(parseFloat(t))?Math.max(0,parseFloat(t)):null;
+      sharedVideoSource=type?type.toLowerCase():null;
+      sharedVideoTab=VALID_TABS.has(tabRaw)?tabRaw:null;
       return sharedVideoId;
+    }
+    function applyVideoUrlParams(url,video,tab){
+      url.searchParams.set('v',String(video.id));
+      const src=sourceTypeForVideo(video);
+      if(src)url.searchParams.set('type',src);
+      const tabVal=tab||currentFilter;
+      if(tabVal&&VALID_TABS.has(tabVal))url.searchParams.set('tab',tabVal);
+      return url;
     }
     function parseSharedVideoId(){return parseSharedVideoParams()}
     function videoUrlKey(v){return (v.videoUrl||v.url||'').trim().toLowerCase()}
@@ -491,8 +509,21 @@
         }).catch(()=>{});
       }
     }
-    async function ensureSharedVideoLoaded(id){
+    async function ensureSharedVideoLoaded(id,sourceHint){
       if(!id)return;
+      const hint=(sourceHint||'').toLowerCase();
+      if(hint==='scraped2'){
+        await loadScraped2Videos();
+        return;
+      }
+      if(hint==='scraped1'){
+        await loadScraped1Chunk(scraped1ChunkIndexForId(id));
+        return;
+      }
+      if(hint==='desi'){
+        await loadDesiVideos();
+        return;
+      }
       const s2Start=videoCatalog.scraped2StartId||2000000;
       const s1Start=videoCatalog.scraped1.startId||1000000;
       if(id>=s2Start){
@@ -797,9 +828,8 @@
     }
     function syncUrlToVideo(video){
       if(!video)return;
-      const url=new URL(window.location.href);
+      const url=applyVideoUrlParams(new URL(window.location.href),video);
       const id=String(video.id);
-      url.searchParams.set('v',id);
       const reel=document.querySelector(`.reel[data-id="${id}"]`);
       const vid=reel?.querySelector('video');
       const t=vid?.currentTime>0.5?vid.currentTime:getPlaybackTimeForVideo(id);
@@ -828,7 +858,8 @@
       const list=[...allVideos].sort((a,b)=>a.id-b.id).slice(0,120);
       list.forEach((video)=>{
         const a=document.createElement('a');
-        a.href=`/?v=${video.id}`;
+        const href=applyVideoUrlParams(new URL('/',window.location.origin),video);
+        a.href=`${href.pathname}${href.search}`;
         a.textContent=`${video.title||'Desi XXX Reel'} — ${video.id}`;
         nav.appendChild(a);
       });
@@ -869,6 +900,29 @@
       if(app.scrollTop>maxTop)app.scrollTop=maxTop;
       else if(app.scrollTop<minTop)app.scrollTop=minTop;
     }
+    function resolveStartIndex(){
+      if(sharedVideoId!=null){
+        const i=feedItems.findIndex(item=>item.type==='video'&&item.video.id===sharedVideoId);
+        if(i>=0)return i;
+      }
+      return Math.max(0,Math.min(currentIndex,Math.max(0,feedItems.length-1)));
+    }
+    function applyInitialFeedPosition(){
+      const app=document.getElementById('app');
+      if(!app||!feedItems.length)return;
+      currentIndex=resolveStartIndex();
+      const top=currentIndex*reelHeightPx();
+      scrollSnapFree=true;
+      app.scrollTop=top;
+      syncFeedWindow();
+      updateVideoBuffer();
+      requestAnimationFrame(()=>{
+        app.scrollTop=top;
+        syncFeedWindow();
+        updateVideoBuffer();
+        scrollSnapFree=false;
+      });
+    }
     function scrollToReelIndex(index,opts={}){
       const app=document.getElementById('app');
       if(!app||!feedItems.length)return;
@@ -877,8 +931,9 @@
       currentIndex=Math.max(0,Math.min(maxIndex,index));
       scrollStepLock=true;
       if(opts.free)scrollSnapFree=true;
-      app.scrollTo({top:currentIndex*h,behavior:opts.smooth?'smooth':'auto'});
+      app.scrollTop=currentIndex*h;
       syncFeedWindow();
+      if(!opts.skipBuffer)updateVideoBuffer();
       const unlock=()=>{scrollStepLock=false;scrollSnapFree=false};
       if(opts.smooth)setTimeout(unlock,400);
       else requestAnimationFrame(()=>requestAnimationFrame(unlock));
@@ -899,7 +954,11 @@
       setTimeout(()=>{scrollStepLock=false;wheelStepLock=false},380);
     }
 
-    if(localStorage.getItem('ageVerified')){document.getElementById('age-popup').style.display='none';document.getElementById('app').style.display='block'}
+    if(localStorage.getItem('ageVerified')){
+      document.getElementById('age-popup').style.display='none';
+      document.getElementById('app').style.display='block';
+    }
+    if('scrollRestoration' in history)history.scrollRestoration='manual';
     syncSeoMeta();
     document.addEventListener('visibilitychange',()=>{
       if(document.hidden){
@@ -937,7 +996,10 @@
     }
 
     async function init(){
+      if(initStarted)return;
+      initStarted=true;
       try{
+        if('scrollRestoration' in history)history.scrollRestoration='manual';
         loadPlaybackMap();
         await loadMetaPools();
         loadSeoKeywords();
@@ -954,38 +1016,32 @@
 
         syncLowDataUi();
         parseSharedVideoParams();
+        if(sharedVideoTab)currentFilter=sharedVideoTab;
+
+        await loadDesiVideos();
+        if(sharedVideoId)await ensureSharedVideoLoaded(sharedVideoId,sharedVideoSource);
+
         if(sharedVideoId){
-          await ensureSharedVideoLoaded(sharedVideoId);
-        }else{
-          await loadDesiVideos();
+          const sharedVideo=allVideos.find(v=>v.id===sharedVideoId);
+          if(sharedVideo&&!sharedVideoTab)currentFilter=filterForSource(sharedVideo.source);
+        }
+        if(currentFilter!=='desi')await ensureDataForFilter(currentFilter);
+        else{
           queueBackgroundCatalogLoad();
           if(typeof requestIdleCallback==='function')requestIdleCallback(()=>probeCdnRangeSupport(),{timeout:4000});
           else setTimeout(probeCdnRangeSupport,3000);
         }
 
-        hydrateSeoLinks();
-        const initialVideo=getCurrentFeedVideo()||allVideos.find(v=>v.id===sharedVideoId);
-        if(initialVideo)syncUrlToVideo(initialVideo);
-        else syncSeoMeta();
-
-        if(sharedVideoId){
-          const sharedVideo=allVideos.find(v=>v.id===sharedVideoId);
-          if(sharedVideo)currentFilter=filterForSource(sharedVideo.source);
-          if(currentFilter!=='desi')await ensureDataForFilter(currentFilter);
-        }
-
         setToggleUI();
         filterVideos();
         renderFeed();
+        applyInitialFeedPosition();
 
-        updateVideoBuffer();
-        if(sharedVideoId){
-          const foundIndex=feedItems.findIndex(item=>item.type==='video'&&item.video.id===sharedVideoId);
-          if(foundIndex>=0)scrollToReelIndex(foundIndex,{free:true});
-          else requestAnimationFrame(()=>scrollToCurrent(false));
-        }else{
-          requestAnimationFrame(()=>scrollToCurrent(false));
-        }
+        const initialVideo=getCurrentFeedVideo()||allVideos.find(v=>v.id===sharedVideoId);
+        if(initialVideo)syncUrlToVideo(initialVideo);
+        else syncSeoMeta();
+        hydrateSeoLinks();
+
         setupScrollListener();
         setupResizeListener();
         setupIntersectionObserver();
@@ -1027,8 +1083,18 @@
         filteredVideos=[...allVideos];
       }
       filteredVideos=shuffle([...filteredVideos]);
+      if(sharedVideoId!=null){
+        const pinIdx=filteredVideos.findIndex(v=>v.id===sharedVideoId);
+        if(pinIdx>0){
+          const [pinned]=filteredVideos.splice(pinIdx,1);
+          filteredVideos.unshift(pinned);
+        }
+      }
       buildFeedItems();
-      if(currentIndex>=feedItems.length)currentIndex=0;
+      if(sharedVideoId!=null){
+        const at=feedItems.findIndex(item=>item.type==='video'&&item.video.id===sharedVideoId);
+        if(at>=0)currentIndex=at;
+      }else if(currentIndex>=feedItems.length)currentIndex=0;
     }
 
     function pushFeedVideo(video,videoIndex,state){
@@ -1638,6 +1704,7 @@
         setFeedTrackHeight();
         syncFeedWindow();
         scrollToCurrent(false);
+        updateVideoBuffer();
       });
       resizeListenerBound=true;
     }
@@ -2232,11 +2299,15 @@
 
     function switchFilterUi(f){
       currentFilter=f;
+      sharedVideoId=null;
+      sharedVideoTab=null;
       setToggleUI();
       filterVideos();
       renderFeed();
       scrollToReelIndex(0,{free:true});
-      updateVideoBuffer();
+      const active=getCurrentFeedVideo();
+      if(active)syncUrlToVideo(active);
+      else syncSeoMeta();
     }
     async function setFilter(f){
       if(f===currentFilter||dataLoading)return;
@@ -2322,8 +2393,8 @@
     }
 
     function getShareUrl(id,time){
-      const url=new URL(window.location.href);
-      url.searchParams.set('v',String(id));
+      const video=allVideos.find(v=>v.id===id);
+      const url=applyVideoUrlParams(new URL(window.location.href),video||{id});
       const t=time??getPlaybackTimeForVideo(id);
       if(t>0.5)url.searchParams.set('t',String(Math.floor(t)));
       else url.searchParams.delete('t');

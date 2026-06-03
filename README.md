@@ -172,7 +172,8 @@ Avoid on GitHub Pages:
 ### App features (playback)
 
 - **Resume position** when swiping back (session + `localStorage`).
-- **Share / URL** with timestamp: `?v=123&t=45`.
+- **Share / URL** with video + tab + source + time: `?v=123&tab=desi&type=desi&t=45` (also `f` or `filter` instead of `tab`).
+- **Reload** restores the URL video (pinned first in feed); blank screen on refresh fixed.
 - **Low data** button (top-left 📉): disables preloading.
 - **Double-tap center** = like; **double-tap sides** = ±10s seek.
 - **Keyboard:** ↑/↓ or J/K = next/prev reel, Space = pause/play.
