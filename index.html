@@ -30,6 +30,7 @@
   <meta name="twitter:image" content="https://desi-xxx-shorts.github.io/og.svg">
   <link rel="manifest" href="manifest.json">
   <link rel="preload" href="videos-desi.json" as="fetch" crossorigin="anonymous">
+  <link rel="preload" href="videos-scraped2.json" as="fetch" crossorigin="anonymous">
   <script type="application/ld+json" id="seo-jsonld"></script>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
   <script type="application/ld+json">
@@ -74,9 +75,10 @@
     #blocked{position:fixed;inset:0;background:var(--bg);z-index:9998;display:none;align-items:center;justify-content:center;text-align:center;padding:2.5rem}
     #blocked h2{color:var(--primary);font-size:1.5rem;margin-bottom:0.9375rem}
     #blocked p{color:rgba(255,255,255,0.6)}
-    #app{height:100vh;height:100svh;width:100%;overflow-y:scroll;scroll-snap-type:y mandatory;overscroll-behavior-y:contain;display:none;position:relative}
+    #app{height:100vh;height:100svh;width:100%;overflow-y:scroll;overscroll-behavior-y:contain;display:none;position:relative}
+    #feed{position:relative;width:100%}
     #app.scroll-locked{overflow:hidden!important;touch-action:none}
-    .reel{width:100%;height:100vh;height:100svh;scroll-snap-align:start;scroll-snap-stop:always;position:relative;display:flex;align-items:center;justify-content:center;background:#000;overflow:hidden}
+    .reel{width:100%;height:100vh;height:100svh;position:absolute;left:0;right:0;display:flex;align-items:center;justify-content:center;background:#000;overflow:hidden}
     .reel-placeholder{background:#111;display:flex;align-items:center;justify-content:center}
     .spinner-mini{width:1.875rem;height:1.875rem;border:0.125rem solid rgba(255,255,255,0.1);border-top-color:var(--primary);border-radius:50%;animation:spin 1s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
@@ -273,6 +275,8 @@
 
     let allVideos=[],filteredVideos=[],feedItems=[],currentFilter='desi',currentVideoId=null,currentIndex=0,scrollListenerBound=false,resizeListenerBound=false,reelObserver=null,likedVideos=JSON.parse(localStorage.getItem('liked')||'[]'),videoComments=JSON.parse(localStorage.getItem('comments')||'{}');
     const VIDEO_PRELOAD_AHEAD=2;
+    const FEED_WINDOW_BEHIND=2;
+    const FEED_WINDOW_AHEAD=4;
     const AD_INTERVAL_MIN=3;
     const AD_INTERVAL_MAX=5;
     const AD_PRELOAD_AHEAD=5;
@@ -302,7 +306,7 @@
     let pendingDownload=null,downloadTimer=null,preparedDownloadUrl=null,downloadSessionId=0,downloadProgressState=null;
     const DOWNLOAD_MIN_MS=5000;
     const PROMO_AD_FALLBACK_MS=8000;
-    let promoScrollLock=null,scrollSettleTimer=null;
+    let promoScrollLock=null,scrollSettleTimer=null,feedWindowScrollTimer=null;
     let promoReadySlots={download:'promoAdWarmA',share:'promoAdWarmB'};
     const promoFallbackTimers={};
     const adCreativeQueue=[];
@@ -330,17 +334,27 @@
       if(!startId||id<startId+1)return 0;
       return Math.min(chunks-1,Math.floor((id-startId-1)/chunkSize));
     }
+    function ensureVideoMeta(v){
+      if(!v||v._metaReady)return;
+      applyRandomMeta(v);
+      v._metaReady=true;
+    }
     function ingestVideos(list){
       const added=[];
       (list||[]).forEach(v=>{
         const key=videoUrlKey(v);
         if(key&&knownVideoUrls.has(key))return;
         if(key)knownVideoUrls.add(key);
-        applyRandomMeta(v);
+        v.source=(v.source||'desi').toLowerCase();
         allVideos.push(v);
         added.push(v);
       });
       return added;
+    }
+    function queueBackgroundCatalogLoad(){
+      const run=()=>{loadScraped2Videos().catch(()=>{})};
+      if(typeof requestIdleCallback==='function')requestIdleCallback(run,{timeout:2500});
+      else setTimeout(run,1200);
     }
     async function fetchVideoList(url){
       const res=await fetch(url);
@@ -377,7 +391,17 @@
     async function ensureDataForFilter(filter){
       await loadDesiVideos();
       if(filter==='desi')return;
-      await Promise.all([loadScraped2Videos(),loadScraped1Chunk(0)]);
+      await loadScraped2Videos();
+      if(filter==='new'){
+        await loadScraped1Chunk(0);
+        return;
+      }
+      if(!scraped1ChunksLoaded.has(0)){
+        loadScraped1Chunk(0).then(added=>{
+          if(currentFilter!=='all'||!added.length)return;
+          appendVideosToFeed(added);
+        }).catch(()=>{});
+      }
     }
     async function ensureSharedVideoLoaded(id){
       if(!id)return;
@@ -571,6 +595,7 @@
     }
     function getVideoSeo(video){
       if(!video)return null;
+      ensureVideoMeta(video);
       const key=String(video.id);
       if(runtimeSeoCache.has(key))return runtimeSeoCache.get(key);
       const seo=runtimeVideoSeo(video);
@@ -764,6 +789,7 @@
           await ensureSharedVideoLoaded(sharedVideoId);
         }else{
           await loadDesiVideos();
+          queueBackgroundCatalogLoad();
         }
 
         hydrateSeoLinks();
@@ -870,15 +896,69 @@
       }
       const beforeLen=feedItems.length;
       batch.forEach((video,i)=>pushFeedVideo(video,startIndex+i,state));
-      for(let i=beforeLen;i<feedItems.length;i++){
-        const item=feedItems[i];
-        if(item.type==='ad')feed.appendChild(createAdReel(item.slot,i));
-        else feed.appendChild(createVideoReel(item.video,item.videoIndex,i));
-      }
+      setFeedTrackHeight();
+      syncFeedWindow();
       observeReels();
     }
 
+    function reelHeightPx(){
+      const app=document.getElementById('app');
+      return app?.clientHeight||window.innerHeight||1;
+    }
+    function tentativeFeedIndex(){
+      const h=reelHeightPx();
+      if(!h||!feedItems.length)return 0;
+      return Math.max(0,Math.min(feedItems.length-1,Math.round(document.getElementById('app').scrollTop/h)));
+    }
+    function setFeedTrackHeight(){
+      const feed=document.getElementById('feed');
+      if(!feed)return;
+      const h=reelHeightPx();
+      feed.style.height=feedItems.length?`${feedItems.length*h}px`:'0';
+    }
+    function feedWindowRange(){
+      const viewIdx=tentativeFeedIndex();
+      const lo=Math.min(currentIndex,viewIdx);
+      const hi=Math.max(currentIndex,viewIdx);
+      return {
+        start:Math.max(0,lo-FEED_WINDOW_BEHIND),
+        end:Math.min(feedItems.length-1,hi+FEED_WINDOW_AHEAD+VIDEO_PRELOAD_AHEAD)
+      };
+    }
+    function layoutMountedReel(el,index){
+      const h=reelHeightPx();
+      el.style.top=`${index*h}px`;
+      el.style.height=`${h}px`;
+    }
+    function mountFeedItemAt(index){
+      const feed=document.getElementById('feed');
+      const item=feedItems[index];
+      if(!item)return;
+      const el=item.type==='ad'?createAdReel(item.slot,index):createVideoReel(item.video,item.videoIndex,index);
+      el.dataset.mounted='1';
+      layoutMountedReel(el,index);
+      feed.appendChild(el);
+    }
+    function syncFeedWindow(){
+      const feed=document.getElementById('feed');
+      if(!feed)return;
+      if(!feedItems.length){feed.innerHTML='';feed.style.height='0';return}
+      setFeedTrackHeight();
+      const {start,end}=feedWindowRange();
+      const keep=new Set();
+      for(let i=start;i<=end;i++)keep.add(i);
+      feed.querySelectorAll('.reel[data-mounted="1"]').forEach(node=>{
+        const idx=parseInt(node.dataset.index,10);
+        if(!keep.has(idx))node.remove();
+      });
+      for(let i=start;i<=end;i++){
+        let node=feed.querySelector(`.reel[data-index="${i}"][data-mounted="1"]`);
+        if(!node)mountFeedItemAt(i);
+        else layoutMountedReel(node,i);
+      }
+    }
     function createVideoReel(v,videoIndex,i){
+      ensureVideoMeta(v);
       const isLiked=likedVideos.includes(v.id);
       const el=document.createElement('div');
       el.className='reel';
@@ -934,10 +1014,7 @@
     function renderFeed(){
       const feed=document.getElementById('feed');
       feed.innerHTML='';
-      feedItems.forEach((item,i)=>{
-        if(item.type==='ad')feed.appendChild(createAdReel(item.slot,i));
-        else feed.appendChild(createVideoReel(item.video,item.videoIndex,i));
-      });
+      syncFeedWindow();
       observeReels();
     }
 
@@ -1116,6 +1193,7 @@
       }
       if(snappedIndex!==currentIndex){
         currentIndex=snappedIndex;
+        syncFeedWindow();
         updateVideoBuffer();
         maybeLoadMoreScrapedChunks();
         const active=getCurrentFeedVideo();
@@ -1128,13 +1206,18 @@
       if(scrollListenerBound)return;
       const app=document.getElementById('app');
       const onSettle=()=>syncReelIndexFromScroll();
+      const onScroll=()=>{
+        if(promoScrollLock)return;
+        clearTimeout(feedWindowScrollTimer);
+        feedWindowScrollTimer=setTimeout(syncFeedWindow,40);
+        clearTimeout(scrollSettleTimer);
+        scrollSettleTimer=setTimeout(onSettle,150);
+      };
       if('onscrollend' in window){
         app.addEventListener('scrollend',onSettle);
+        app.addEventListener('scroll',onScroll,{passive:true});
       }else{
-        app.addEventListener('scroll',()=>{
-          clearTimeout(scrollSettleTimer);
-          scrollSettleTimer=setTimeout(onSettle,150);
-        },{passive:true});
+        app.addEventListener('scroll',onScroll,{passive:true});
       }
       scrollListenerBound=true;
     }
@@ -1142,7 +1225,10 @@
     function setupResizeListener(){
       if(resizeListenerBound)return;
       window.addEventListener('resize',()=>{
-        if(!promoScrollLock)scrollToCurrent(false);
+        if(promoScrollLock)return;
+        setFeedTrackHeight();
+        syncFeedWindow();
+        scrollToCurrent(false);
       });
       resizeListenerBound=true;
     }
@@ -1608,21 +1694,29 @@
       syncMuteButtons();
     }
 
+    function switchFilterUi(f){
+      currentFilter=f;
+      currentIndex=0;
+      setToggleUI();
+      filterVideos();
+      renderFeed();
+      document.getElementById('app').scrollTop=0;
+      updateVideoBuffer();
+    }
     async function setFilter(f){
       if(f===currentFilter||dataLoading)return;
+      if(f==='desi'&&loadedSources.desi){switchFilterUi(f);return}
+      if(f==='all'&&loadedSources.desi&&loadedSources.scraped2){switchFilterUi(f);return}
+      if(f==='new'&&loadedSources.desi&&loadedSources.scraped2&&scraped1ChunksLoaded.has(0)){switchFilterUi(f);return}
       dataLoading=true;
       const prevFilter=currentFilter;
+      const toastTimer=setTimeout(()=>showToast('Loading…'),400);
       try{
-        showToast('Loading…');
         await ensureDataForFilter(f);
-        currentFilter=f;
-        currentIndex=0;
-        setToggleUI();
-        filterVideos();
-        renderFeed();
-        document.getElementById('app').scrollTop=0;
-        updateVideoBuffer();
+        clearTimeout(toastTimer);
+        switchFilterUi(f);
       }catch(_){
+        clearTimeout(toastTimer);
         currentFilter=prevFilter;
         setToggleUI();
         showToast('Could not load videos');
@@ -1647,6 +1741,7 @@
       currentVideoId=id;
       const v=allVideos.find(x=>x.id===id);
       if(!v)return;
+      ensureVideoMeta(v);
       const extra=videoComments[id]||[];
       const all=[...(v.comments||[]),...extra];
       document.getElementById('commentCount').textContent=all.length;
