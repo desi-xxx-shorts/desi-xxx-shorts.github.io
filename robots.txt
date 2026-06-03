@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Allow: /seo-crawl.html
+
+Sitemap: https://desi-xxx-shorts.github.io/sitemap.xml
+Sitemap: https://desi-xxx-shorts.github.io/sitemap-main.xml
+Sitemap: https://desi-xxx-shorts.github.io/sitemap-scraped2.xml

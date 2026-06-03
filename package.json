@@ -1,0 +1,8 @@
+{
+  "name": "desi-reels",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:seo": "node scripts/build-seo.mjs"
+  }
+}

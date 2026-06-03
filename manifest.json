@@ -1,0 +1,10 @@
+{
+  "name": "Desi Reels",
+  "short_name": "DesiReels",
+  "description": "Watch trending desi reels short videos for Indian users",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "orientation": "portrait"
+}

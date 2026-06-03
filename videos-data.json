@@ -1,0 +1,10 @@
+{
+  "desi": "videos-desi.json",
+  "scraped2": "videos-scraped2.json",
+  "scraped2StartId": 2000000,
+  "scraped1": {
+    "chunks": 10,
+    "chunkSize": 9191,
+    "startId": 1000000
+  }
+}

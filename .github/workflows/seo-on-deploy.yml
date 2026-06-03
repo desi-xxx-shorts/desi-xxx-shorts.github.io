@@ -1,0 +1,47 @@
+# Runs build:seo on push, commits sitemaps + crawl page for GitHub Pages (branch deploy).
+name: Build SEO
+
+on:
+  push:
+    branches: [main, master]
+    paths-ignore:
+      - 'sitemap.xml'
+      - 'sitemap-*.xml'
+      - 'seo-crawl.html'
+      - 'seo-keywords-pool.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: seo-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-seo:
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Build SEO assets
+        run: npm run build:seo
+
+      - name: Commit and push SEO files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add sitemap.xml sitemap-*.xml seo-crawl.html seo-keywords-pool.json
+          if git diff --staged --quiet; then
+            echo "SEO files already up to date."
+            exit 0
+          fi
+          git commit -m "chore: auto-update SEO sitemaps and crawl page [skip ci]"
+          git push

@@ -1,0 +1,1826 @@
+{
+  "accounts": [
+    {
+      "u": "Vikram",
+      "from": "boy",
+      "img": "https://randomuser.me/api/portraits/med/men/10.jpg"
+    },
+    {
+      "u": "Raj",
+      "from": "boy",
+      "img": "https://randomuser.me/api/portraits/med/men/11.jpg"
+    },
+    {
+      "u": "Arjun",
+      "from": "boy",
+      "img": "https://randomuser.me/api/portraits/med/men/12.jpg"
+    },
+    {
+      "u": "Rohan",
+      "from": "boy",
+      "img": "https://randomuser.me/api/portraits/med/men/13.jpg"
+    },
+    {
+      "u": "Karan",
+      "from": "boy",
+      "img": "https://randomuser.me/api/portraits/med/men/14.jpg"
+    },
+    {
+      "u": "Amit",
+      "from": "boy"
+    },
+    {
+      "u": "Dev",
+      "from": "boy"
+    },
+    {
+      "u": "Yash",
+      "from": "boy"
+    },
+    {
+      "u": "Kabir",
+      "from": "boy"
+    },
+    {
+      "u": "Manish",
+      "from": "boy"
+    },
+    {
+      "u": "Rahul",
+      "from": "boy"
+    },
+    {
+      "u": "Aditya",
+      "from": "boy"
+    },
+    {
+      "u": "Siddharth",
+      "from": "boy"
+    },
+    {
+      "u": "Aakash",
+      "from": "boy"
+    },
+    {
+      "u": "Aman",
+      "from": "boy"
+    },
+    {
+      "u": "Harsh",
+      "from": "boy"
+    },
+    {
+      "u": "Gaurav",
+      "from": "boy"
+    },
+    {
+      "u": "Suresh",
+      "from": "boy"
+    },
+    {
+      "u": "Ramesh",
+      "from": "boy"
+    },
+    {
+      "u": "Deepak",
+      "from": "boy"
+    },
+    {
+      "u": "Sanjay",
+      "from": "boy"
+    },
+    {
+      "u": "Ajay",
+      "from": "boy"
+    },
+    {
+      "u": "Vijay",
+      "from": "boy"
+    },
+    {
+      "u": "Prakash",
+      "from": "boy"
+    },
+    {
+      "u": "Ravi",
+      "from": "boy"
+    },
+    {
+      "u": "Sunil",
+      "from": "boy"
+    },
+    {
+      "u": "Mohan",
+      "from": "boy"
+    },
+    {
+      "u": "Anil",
+      "from": "boy"
+    },
+    {
+      "u": "Vinod",
+      "from": "boy"
+    },
+    {
+      "u": "Kunal",
+      "from": "boy"
+    },
+    {
+      "u": "Nitin",
+      "from": "boy"
+    },
+    {
+      "u": "Pankaj",
+      "from": "boy"
+    },
+    {
+      "u": "Rohit",
+      "from": "boy"
+    },
+    {
+      "u": "Sumit",
+      "from": "boy"
+    },
+    {
+      "u": "Varun",
+      "from": "boy"
+    },
+    {
+      "u": "Tarun",
+      "from": "boy"
+    },
+    {
+      "u": "Naveen",
+      "from": "boy"
+    },
+    {
+      "u": "Ashish",
+      "from": "boy"
+    },
+    {
+      "u": "Vivek",
+      "from": "boy"
+    },
+    {
+      "u": "Sandeep",
+      "from": "boy"
+    },
+    {
+      "u": "Manoj",
+      "from": "boy"
+    },
+    {
+      "u": "Dinesh",
+      "from": "boy"
+    },
+    {
+      "u": "Rakesh",
+      "from": "boy"
+    },
+    {
+      "u": "Alok",
+      "from": "boy"
+    },
+    {
+      "u": "Brijesh",
+      "from": "boy"
+    },
+    {
+      "u": "Chetan",
+      "from": "boy"
+    },
+    {
+      "u": "Darshan",
+      "from": "boy"
+    },
+    {
+      "u": "Girish",
+      "from": "boy"
+    },
+    {
+      "u": "Hemant",
+      "from": "boy"
+    },
+    {
+      "u": "Jatin",
+      "from": "boy"
+    },
+    {
+      "u": "Lalit",
+      "from": "boy"
+    },
+    {
+      "u": "Mahesh",
+      "from": "boy"
+    },
+    {
+      "u": "Naresh",
+      "from": "boy"
+    },
+    {
+      "u": "Omkar",
+      "from": "boy"
+    },
+    {
+      "u": "Pranav",
+      "from": "boy"
+    },
+    {
+      "u": "Rishabh",
+      "from": "boy"
+    },
+    {
+      "u": "Sameer",
+      "from": "boy"
+    },
+    {
+      "u": "Tushar",
+      "from": "boy"
+    },
+    {
+      "u": "Uday",
+      "from": "boy"
+    },
+    {
+      "u": "Vipul",
+      "from": "boy"
+    },
+    {
+      "u": "Abhishek",
+      "from": "boy"
+    },
+    {
+      "u": "Bhavesh",
+      "from": "boy"
+    },
+    {
+      "u": "Chirag",
+      "from": "boy"
+    },
+    {
+      "u": "Dhruv",
+      "from": "boy"
+    },
+    {
+      "u": "Gopal",
+      "from": "boy"
+    },
+    {
+      "u": "Harish",
+      "from": "boy"
+    },
+    {
+      "u": "Jayesh",
+      "from": "boy"
+    },
+    {
+      "u": "Ketan",
+      "from": "boy"
+    },
+    {
+      "u": "Lokesh",
+      "from": "boy"
+    },
+    {
+      "u": "Mukesh",
+      "from": "boy"
+    },
+    {
+      "u": "Nishant",
+      "from": "boy"
+    },
+    {
+      "u": "Parth",
+      "from": "boy"
+    },
+    {
+      "u": "Raghav",
+      "from": "boy"
+    },
+    {
+      "u": "Sagar",
+      "from": "boy"
+    },
+    {
+      "u": "Tejas",
+      "from": "boy"
+    },
+    {
+      "u": "Utkarsh",
+      "from": "boy"
+    },
+    {
+      "u": "Vivaan",
+      "from": "boy"
+    },
+    {
+      "u": "Yuvraj",
+      "from": "boy"
+    },
+    {
+      "u": "Zeeshan",
+      "from": "boy"
+    },
+    {
+      "u": "Akash",
+      "from": "boy"
+    },
+    {
+      "u": "Bilal",
+      "from": "boy"
+    },
+    {
+      "u": "Dilip",
+      "from": "boy"
+    },
+    {
+      "u": "Eshan",
+      "from": "boy"
+    },
+    {
+      "u": "Farhan",
+      "from": "boy"
+    },
+    {
+      "u": "Govind",
+      "from": "boy"
+    },
+    {
+      "u": "Hitesh",
+      "from": "boy"
+    },
+    {
+      "u": "Imran",
+      "from": "boy"
+    },
+    {
+      "u": "Jagdish",
+      "from": "boy"
+    },
+    {
+      "u": "Kartik",
+      "from": "boy"
+    },
+    {
+      "u": "Lakhan",
+      "from": "boy"
+    },
+    {
+      "u": "Mitesh",
+      "from": "boy"
+    },
+    {
+      "u": "Nakul",
+      "from": "boy"
+    },
+    {
+      "u": "Omprakash",
+      "from": "boy"
+    },
+    {
+      "u": "Piyush",
+      "from": "boy"
+    },
+    {
+      "u": "Qasim",
+      "from": "boy"
+    },
+    {
+      "u": "Ritesh",
+      "from": "boy"
+    },
+    {
+      "u": "Sachin",
+      "from": "boy"
+    },
+    {
+      "u": "Tarunesh",
+      "from": "boy"
+    },
+    {
+      "u": "Umesh",
+      "from": "boy"
+    },
+    {
+      "u": "Vishal",
+      "from": "boy"
+    },
+    {
+      "u": "Wasim",
+      "from": "boy"
+    },
+    {
+      "u": "Yogesh",
+      "from": "boy"
+    },
+    {
+      "u": "Zubin",
+      "from": "boy"
+    },
+    {
+      "u": "Aaditya",
+      "from": "boy"
+    },
+    {
+      "u": "Balraj",
+      "from": "boy"
+    },
+    {
+      "u": "Chandan",
+      "from": "boy"
+    },
+    {
+      "u": "Dhanraj",
+      "from": "boy"
+    },
+    {
+      "u": "Eknath",
+      "from": "boy"
+    },
+    {
+      "u": "Firoz",
+      "from": "boy"
+    },
+    {
+      "u": "Ganesh",
+      "from": "boy"
+    },
+    {
+      "u": "Hardik",
+      "from": "boy"
+    },
+    {
+      "u": "Irfan",
+      "from": "boy"
+    },
+    {
+      "u": "Jeevan",
+      "from": "boy"
+    },
+    {
+      "u": "Keshav",
+      "from": "boy"
+    },
+    {
+      "u": "Luvkush",
+      "from": "boy"
+    },
+    {
+      "u": "Madhav",
+      "from": "boy"
+    },
+    {
+      "u": "Naveenlal",
+      "from": "boy"
+    },
+    {
+      "u": "Ojas",
+      "from": "boy"
+    },
+    {
+      "u": "Pradeep",
+      "from": "boy"
+    },
+    {
+      "u": "Rajan",
+      "from": "boy"
+    },
+    {
+      "u": "Shivam",
+      "from": "boy"
+    },
+    {
+      "u": "Tilak",
+      "from": "boy"
+    },
+    {
+      "u": "Ujjwal",
+      "from": "boy"
+    },
+    {
+      "u": "Vedant",
+      "from": "boy"
+    },
+    {
+      "u": "Waseem",
+      "from": "boy"
+    },
+    {
+      "u": "Yatin",
+      "from": "boy"
+    },
+    {
+      "u": "Zaid",
+      "from": "boy"
+    },
+    {
+      "u": "Akhil",
+      "from": "boy"
+    },
+    {
+      "u": "Bharat",
+      "from": "boy"
+    },
+    {
+      "u": "Chandanveer",
+      "from": "boy"
+    },
+    {
+      "u": "Durgesh",
+      "from": "boy"
+    },
+    {
+      "u": "Eshwar",
+      "from": "boy"
+    },
+    {
+      "u": "Faisal",
+      "from": "boy"
+    },
+    {
+      "u": "Gautam",
+      "from": "boy"
+    },
+    {
+      "u": "Himanshu",
+      "from": "boy"
+    },
+    {
+      "u": "Inder",
+      "from": "boy"
+    },
+    {
+      "u": "Jaswant",
+      "from": "boy"
+    },
+    {
+      "u": "Kailash",
+      "from": "boy"
+    },
+    {
+      "u": "Laxman",
+      "from": "boy"
+    },
+    {
+      "u": "Mangal",
+      "from": "boy"
+    },
+    {
+      "u": "Nirmal",
+      "from": "boy"
+    },
+    {
+      "u": "Onkar",
+      "from": "boy"
+    },
+    {
+      "u": "Pramod",
+      "from": "boy"
+    },
+    {
+      "u": "Rupesh",
+      "from": "boy"
+    },
+    {
+      "u": "Sohan",
+      "from": "boy"
+    },
+    {
+      "u": "Trilok",
+      "from": "boy"
+    },
+    {
+      "u": "Ugrasen",
+      "from": "boy"
+    },
+    {
+      "u": "Vikrant",
+      "from": "boy"
+    },
+    {
+      "u": "Waman",
+      "from": "boy"
+    },
+    {
+      "u": "Yoginder",
+      "from": "boy"
+    },
+    {
+      "u": "Priya",
+      "from": "girl",
+      "img": "https://randomuser.me/api/portraits/med/women/20.jpg"
+    },
+    {
+      "u": "Anjali",
+      "from": "girl",
+      "img": "https://randomuser.me/api/portraits/med/women/21.jpg"
+    },
+    {
+      "u": "Sneha",
+      "from": "girl",
+      "img": "https://randomuser.me/api/portraits/med/women/22.jpg"
+    },
+    {
+      "u": "Neha",
+      "from": "girl",
+      "img": "https://randomuser.me/api/portraits/med/women/23.jpg"
+    },
+    {
+      "u": "Pooja",
+      "from": "girl",
+      "img": "https://randomuser.me/api/portraits/med/women/24.jpg"
+    },
+    {
+      "u": "Kavya",
+      "from": "girl"
+    },
+    {
+      "u": "Isha",
+      "from": "girl"
+    },
+    {
+      "u": "Divya",
+      "from": "girl"
+    },
+    {
+      "u": "Shreya",
+      "from": "girl"
+    },
+    {
+      "u": "Tanya",
+      "from": "girl"
+    },
+    {
+      "u": "Maya",
+      "from": "girl"
+    },
+    {
+      "u": "Naina",
+      "from": "girl"
+    },
+    {
+      "u": "Komal",
+      "from": "girl"
+    },
+    {
+      "u": "Riya",
+      "from": "girl"
+    },
+    {
+      "u": "Simran",
+      "from": "girl"
+    },
+    {
+      "u": "Aditi",
+      "from": "girl"
+    },
+    {
+      "u": "Aishwarya",
+      "from": "girl"
+    },
+    {
+      "u": "Bhavna",
+      "from": "girl"
+    },
+    {
+      "u": "Chitra",
+      "from": "girl"
+    },
+    {
+      "u": "Deepika",
+      "from": "girl"
+    },
+    {
+      "u": "Ekta",
+      "from": "girl"
+    },
+    {
+      "u": "Garima",
+      "from": "girl"
+    },
+    {
+      "u": "Heena",
+      "from": "girl"
+    },
+    {
+      "u": "Indu",
+      "from": "girl"
+    },
+    {
+      "u": "Jyoti",
+      "from": "girl"
+    },
+    {
+      "u": "Kavita",
+      "from": "girl"
+    },
+    {
+      "u": "Lata",
+      "from": "girl"
+    },
+    {
+      "u": "Meera",
+      "from": "girl"
+    },
+    {
+      "u": "Nidhi",
+      "from": "girl"
+    },
+    {
+      "u": "Pallavi",
+      "from": "girl"
+    },
+    {
+      "u": "Radha",
+      "from": "girl"
+    },
+    {
+      "u": "Sapna",
+      "from": "girl"
+    },
+    {
+      "u": "Tanvi",
+      "from": "girl"
+    },
+    {
+      "u": "Urmila",
+      "from": "girl"
+    },
+    {
+      "u": "Vidya",
+      "from": "girl"
+    },
+    {
+      "u": "Yamini",
+      "from": "girl"
+    },
+    {
+      "u": "Aarti",
+      "from": "girl"
+    },
+    {
+      "u": "Bindu",
+      "from": "girl"
+    },
+    {
+      "u": "Charu",
+      "from": "girl"
+    },
+    {
+      "u": "Disha",
+      "from": "girl"
+    },
+    {
+      "u": "Esha",
+      "from": "girl"
+    },
+    {
+      "u": "Fatima",
+      "from": "girl"
+    },
+    {
+      "u": "Gita",
+      "from": "girl"
+    },
+    {
+      "u": "Hina",
+      "from": "girl"
+    },
+    {
+      "u": "Ishita",
+      "from": "girl"
+    },
+    {
+      "u": "Jaya",
+      "from": "girl"
+    },
+    {
+      "u": "Kiran",
+      "from": "girl"
+    },
+    {
+      "u": "Lakshmi",
+      "from": "girl"
+    },
+    {
+      "u": "Monika",
+      "from": "girl"
+    },
+    {
+      "u": "Swati",
+      "from": "girl"
+    }
+  ],
+  "comments": [
+    {
+      "u": "Vikram",
+      "t": "Teri aur teri saheli dono ki chut ek saath faad dunga, tayyar rehna aaj raat.",
+      "from": "boy",
+      "img": "https://randomuser.me/api/portraits/med/men/10.jpg"
+    },
+    {
+      "u": "Raj",
+      "t": "Main tujhe aur teri friend ko ek hi bed pe chodunga jab tak dono thak na jayein.",
+      "from": "boy",
+      "img": "https://randomuser.me/api/portraits/med/men/11.jpg"
+    },
+    {
+      "u": "Arjun",
+      "t": "Dono randiyon ki gaand mar ke bhosda bana dunga, video me jo dikha rahi ho wahi haqikat banegi.",
+      "from": "boy",
+      "img": "https://randomuser.me/api/portraits/med/men/12.jpg"
+    },
+    {
+      "u": "Rohan",
+      "t": "Teri chut me apna lund daalunga aur teri friend ki chut me ungli karte rahunga.",
+      "from": "boy",
+      "img": "https://randomuser.me/api/portraits/med/men/13.jpg"
+    },
+    {
+      "u": "Karan",
+      "t": "Ek saath dono ko cuda ke thak jaunga, koi bach nahi payegi is baar.",
+      "from": "boy",
+      "img": "https://randomuser.me/api/portraits/med/men/14.jpg"
+    },
+    {
+      "u": "Amit",
+      "t": "Tujhe doggy style me chodunga aur teri friend ka muh me lund de dunga saath me.",
+      "from": "boy"
+    },
+    {
+      "u": "Dev",
+      "t": "Dono ki chut chat chat ke tumhara saara maal pi jaunga, randi jaisi taste aa rahi hai.",
+      "from": "boy"
+    },
+    {
+      "u": "Yash",
+      "t": "Teri saheli ko bhi meri randi bana lunga, dono ek hi room me nangi rahogi.",
+      "from": "boy"
+    },
+    {
+      "u": "Kabir",
+      "t": "Tujhpe gangbang karunga, chaar lund ek saath teri chut aur gaand me jayenge.",
+      "from": "boy"
+    },
+    {
+      "u": "Manish",
+      "t": "Teri friend ki gaand tujhe chuswaunga pehle, phir main dono ko pelunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Rahul",
+      "t": "Dono ko kutiya bana ke peeche se chodunga jab tak cheekh band na ho.",
+      "from": "boy"
+    },
+    {
+      "u": "Aditya",
+      "t": "Teri chut faad ke teri friend ki chut me thook dunga, ye mera plan hai aaj.",
+      "from": "boy"
+    },
+    {
+      "u": "Siddharth",
+      "t": "Ek lund teri chut me aur ek lund teri friend ke muh me ek saath daal dunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Aakash",
+      "t": "Tujhe aur teri behen ko ek saath pel dunga agar dono ek ghar me mili.",
+      "from": "boy"
+    },
+    {
+      "u": "Aman",
+      "t": "Dono randi jaisi lag rahi ho, bilkul chodne layak maal ho tum video me.",
+      "from": "boy"
+    },
+    {
+      "u": "Harsh",
+      "t": "Teri ex ki chut bhi yaad aa rahi hai, usko bhi chodne ka man kar raha hai.",
+      "from": "boy"
+    },
+    {
+      "u": "Gaurav",
+      "t": "Apni ex ko bula le saath me, main dono ko ek hi bed pe pel dunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Suresh",
+      "t": "Teri purani yaar ki gaand bhi marunga jab wo saamne aayegi, bhool mat jana.",
+      "from": "boy"
+    },
+    {
+      "u": "Ramesh",
+      "t": "Tera ex ka lund chuswa ke tujhe dikhaunga ki tu meri randi hai ab.",
+      "from": "boy"
+    },
+    {
+      "u": "Deepak",
+      "t": "Tujhe apne ex ke saamne chod ke randi bana dunga, sharam sab khatam kar dunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Sanjay",
+      "t": "Teri chut me itna bada lund daalunga ki teri cheekh poore mohalle me sunai degi.",
+      "from": "boy"
+    },
+    {
+      "u": "Ajay",
+      "t": "Gadhe jaisa mota lund teri chut me ghusa dunga, dekh lena tu bardasht kar payegi ya nahi.",
+      "from": "boy"
+    },
+    {
+      "u": "Vijay",
+      "t": "Tera poora bhosda bana dunga itne bade lund se ki dubara tight na lage.",
+      "from": "boy"
+    },
+    {
+      "u": "Prakash",
+      "t": "Aaj teri chut faad ke khoon nikal dunga, itna hard chodunga ki yaad rahega.",
+      "from": "boy"
+    },
+    {
+      "u": "Ravi",
+      "t": "Teri chut itni tight lag rahi hai jaise teri maa ki umar ki randi ho tu.",
+      "from": "boy"
+    },
+    {
+      "u": "Sunil",
+      "t": "Agar mujhe mauka mila to poora parivar chod dunga, koi bachi nahi rahegi.",
+      "from": "boy"
+    },
+    {
+      "u": "Mohan",
+      "t": "Teri behen ki chut bhi chodni hai mujhe, jaldi le aana use bhi saath me.",
+      "from": "boy"
+    },
+    {
+      "u": "Anil",
+      "t": "Saas aur bahu dono ko ek saath lunga jab ghar me akeli hongi.",
+      "from": "boy"
+    },
+    {
+      "u": "Vinod",
+      "t": "Teri chut me muth maar ke video banaunga aur sabko bhej dunga agar nakhre kiye.",
+      "from": "boy"
+    },
+    {
+      "u": "Kunal",
+      "t": "Randi tu hai poori, teri chut ab public property hai meri nazron me.",
+      "from": "boy"
+    },
+    {
+      "u": "Nitin",
+      "t": "Har angle se apni chut dikha randi, main har pose me tujhe pelunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Pankaj",
+      "t": "Teri chut pe jhad ke photo bhejunga tujhe, save kar lena gallery me.",
+      "from": "boy"
+    },
+    {
+      "u": "Rohit",
+      "t": "Teri chut chat ke tera saara pani pi jaunga, ek boond bhi waste nahi hone dunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Sumit",
+      "t": "Teri gaand me lund aur chut me ungli ek saath daal dunga, dono ched bhar dunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Varun",
+      "t": "Teri tight gaand fad ke rakh dunga aaj, kal se chalna mushkil hoga tujhe.",
+      "from": "boy"
+    },
+    {
+      "u": "Tarun",
+      "t": "Do lund ek saath teri chut me daalne ka man kar raha hai, dost ko bula lunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Naveen",
+      "t": "Aaj raat tujhe pregnant kar dunga, pill mat lena kuch bhi baad me.",
+      "from": "boy"
+    },
+    {
+      "u": "Ashish",
+      "t": "Teri chut ka bhosda bana ke chhod dunga, phir dubara mat bolna tight hai.",
+      "from": "boy"
+    },
+    {
+      "u": "Vivek",
+      "t": "Kitni badi randi hai tu, ye video dekh ke sabko pata chal gaya ab.",
+      "from": "boy"
+    },
+    {
+      "u": "Sandeep",
+      "t": "Tera ex dekh raha hoga, ab tu meri randi ban ke rehgi har roz.",
+      "from": "boy"
+    },
+    {
+      "u": "Manoj",
+      "t": "Mera lund chuswaunga tujhse apne ex ke saamne, sharam haya sab khatam.",
+      "from": "boy"
+    },
+    {
+      "u": "Dinesh",
+      "t": "Teri friend ko bhi tera lund chuswaunga, dono ek dusre ko sikhayengi.",
+      "from": "boy"
+    },
+    {
+      "u": "Rakesh",
+      "t": "Dono ko nanga karke ek dusre ki chut chatwaunga, phir main aa ke pelunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Alok",
+      "t": "Tujhe aur teri saheli ko threesome me le lunga, teen ghante tak nahi rukunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Brijesh",
+      "t": "Pehle teri friend ki gaand marunga, phir teri chut me apna maal bhar dunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Chetan",
+      "t": "Dono ki chut me apna maal bhar dunga itna ki bahar tak beh jaye.",
+      "from": "boy"
+    },
+    {
+      "u": "Darshan",
+      "t": "Teri chut itni gili lag rahi hai jaise randi ne paani chhod diya ho abhi.",
+      "from": "boy"
+    },
+    {
+      "u": "Girish",
+      "t": "Tera pati dekh le kaise teri chut chat raha hu main, wo kuch nahi kar payega.",
+      "from": "boy"
+    },
+    {
+      "u": "Hemant",
+      "t": "Bhabhi, teri chut me apna bada lund daal du kya, devar hun main tera.",
+      "from": "boy"
+    },
+    {
+      "u": "Jatin",
+      "t": "Main tera devar hun, teri chut faad ke rakh dunga jab bhi akeli milegi.",
+      "from": "boy"
+    },
+    {
+      "u": "Lalit",
+      "t": "Tu saas ki umr ki lagti hai par chut jawan randi jaisi hai, mast maal hai.",
+      "from": "boy"
+    },
+    {
+      "u": "Mahesh",
+      "t": "Teri chut me jeeb ghusa ke andar tak chatunga jab tak tu jhad na jaye.",
+      "from": "boy"
+    },
+    {
+      "u": "Naresh",
+      "t": "Teri chut se pani nikalwa ke saara pi jaunga, taste mast hai tera.",
+      "from": "boy"
+    },
+    {
+      "u": "Omkar",
+      "t": "Aaj teri gaand me bhi lund daal dunga, pehli baar dard hoga par chup rehna.",
+      "from": "boy"
+    },
+    {
+      "u": "Pranav",
+      "t": "Teri randi chut pe double penetration karunga, do lund ek saath andar.",
+      "from": "boy"
+    },
+    {
+      "u": "Rishabh",
+      "t": "Tujhe road pe le jaake chodne ka man kar raha hai, public me randi bana dunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Sameer",
+      "t": "Teri chut ki video leak kar dunga agar mujhse baat karne ka style badla.",
+      "from": "boy"
+    },
+    {
+      "u": "Tushar",
+      "t": "Blackmail karke har roz chodunga tujhe, escape nahi hai ab teri.",
+      "from": "boy"
+    },
+    {
+      "u": "Uday",
+      "t": "Agar nahi mani to teri chut me bottle ghusa dunga, soch le pehle se.",
+      "from": "boy"
+    },
+    {
+      "u": "Vipul",
+      "t": "Sab dost ko bula ke teri chut community banaenge, har roz naya lund milega tujhe.",
+      "from": "boy"
+    },
+    {
+      "u": "Abhishek",
+      "t": "Teri aur teri saheli dono ki chut ek saath faad dunga, tayyar rehna aaj raat.",
+      "from": "boy"
+    },
+    {
+      "u": "Bhavesh",
+      "t": "Main tujhe aur teri friend ko ek hi bed pe chodunga jab tak dono thak na jayein.",
+      "from": "boy"
+    },
+    {
+      "u": "Chirag",
+      "t": "Dono randiyon ki gaand mar ke bhosda bana dunga, video me jo dikha rahi ho wahi haqikat banegi.",
+      "from": "boy"
+    },
+    {
+      "u": "Dhruv",
+      "t": "Teri chut me apna lund daalunga aur teri friend ki chut me ungli karte rahunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Gopal",
+      "t": "Ek saath dono ko cuda ke thak jaunga, koi bach nahi payegi is baar.",
+      "from": "boy"
+    },
+    {
+      "u": "Harish",
+      "t": "Tujhe doggy style me chodunga aur teri friend ka muh me lund de dunga saath me.",
+      "from": "boy"
+    },
+    {
+      "u": "Jayesh",
+      "t": "Dono ki chut chat chat ke tumhara saara maal pi jaunga, randi jaisi taste aa rahi hai.",
+      "from": "boy"
+    },
+    {
+      "u": "Ketan",
+      "t": "Teri saheli ko bhi meri randi bana lunga, dono ek hi room me nangi rahogi.",
+      "from": "boy"
+    },
+    {
+      "u": "Lokesh",
+      "t": "Tujhpe gangbang karunga, chaar lund ek saath teri chut aur gaand me jayenge.",
+      "from": "boy"
+    },
+    {
+      "u": "Mukesh",
+      "t": "Teri friend ki gaand tujhe chuswaunga pehle, phir main dono ko pelunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Nishant",
+      "t": "Dono ko kutiya bana ke peeche se chodunga jab tak cheekh band na ho.",
+      "from": "boy"
+    },
+    {
+      "u": "Parth",
+      "t": "Teri chut faad ke teri friend ki chut me thook dunga, ye mera plan hai aaj.",
+      "from": "boy"
+    },
+    {
+      "u": "Raghav",
+      "t": "Ek lund teri chut me aur ek lund teri friend ke muh me ek saath daal dunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Sagar",
+      "t": "Tujhe aur teri behen ko ek saath pel dunga agar dono ek ghar me mili.",
+      "from": "boy"
+    },
+    {
+      "u": "Tejas",
+      "t": "Dono randi jaisi lag rahi ho, bilkul chodne layak maal ho tum video me.",
+      "from": "boy"
+    },
+    {
+      "u": "Utkarsh",
+      "t": "Teri ex ki chut bhi yaad aa rahi hai, usko bhi chodne ka man kar raha hai.",
+      "from": "boy"
+    },
+    {
+      "u": "Vivaan",
+      "t": "Apni ex ko bula le saath me, main dono ko ek hi bed pe pel dunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Yuvraj",
+      "t": "Teri purani yaar ki gaand bhi marunga jab wo saamne aayegi, bhool mat jana.",
+      "from": "boy"
+    },
+    {
+      "u": "Zeeshan",
+      "t": "Tera ex ka lund chuswa ke tujhe dikhaunga ki tu meri randi hai ab.",
+      "from": "boy"
+    },
+    {
+      "u": "Akash",
+      "t": "Tujhe apne ex ke saamne chod ke randi bana dunga, sharam sab khatam kar dunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Bilal",
+      "t": "Teri chut me itna bada lund daalunga ki teri cheekh poore mohalle me sunai degi.",
+      "from": "boy"
+    },
+    {
+      "u": "Dilip",
+      "t": "Gadhe jaisa mota lund teri chut me ghusa dunga, dekh lena tu bardasht kar payegi ya nahi.",
+      "from": "boy"
+    },
+    {
+      "u": "Eshan",
+      "t": "Tera poora bhosda bana dunga itne bade lund se ki dubara tight na lage.",
+      "from": "boy"
+    },
+    {
+      "u": "Farhan",
+      "t": "Aaj teri chut faad ke khoon nikal dunga, itna hard chodunga ki yaad rahega.",
+      "from": "boy"
+    },
+    {
+      "u": "Govind",
+      "t": "Teri chut itni tight lag rahi hai jaise teri maa ki umar ki randi ho tu.",
+      "from": "boy"
+    },
+    {
+      "u": "Hitesh",
+      "t": "Agar mujhe mauka mila to poora parivar chod dunga, koi bachi nahi rahegi.",
+      "from": "boy"
+    },
+    {
+      "u": "Imran",
+      "t": "Teri behen ki chut bhi chodni hai mujhe, jaldi le aana use bhi saath me.",
+      "from": "boy"
+    },
+    {
+      "u": "Jagdish",
+      "t": "Saas aur bahu dono ko ek saath lunga jab ghar me akeli hongi.",
+      "from": "boy"
+    },
+    {
+      "u": "Kartik",
+      "t": "Teri chut me muth maar ke video banaunga aur sabko bhej dunga agar nakhre kiye.",
+      "from": "boy"
+    },
+    {
+      "u": "Lakhan",
+      "t": "Randi tu hai poori, teri chut ab public property hai meri nazron me.",
+      "from": "boy"
+    },
+    {
+      "u": "Mitesh",
+      "t": "Har angle se apni chut dikha randi, main har pose me tujhe pelunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Nakul",
+      "t": "Teri chut pe jhad ke photo bhejunga tujhe, save kar lena gallery me.",
+      "from": "boy"
+    },
+    {
+      "u": "Omprakash",
+      "t": "Teri chut chat ke tera saara pani pi jaunga, ek boond bhi waste nahi hone dunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Piyush",
+      "t": "Teri gaand me lund aur chut me ungli ek saath daal dunga, dono ched bhar dunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Qasim",
+      "t": "Teri tight gaand fad ke rakh dunga aaj, kal se chalna mushkil hoga tujhe.",
+      "from": "boy"
+    },
+    {
+      "u": "Ritesh",
+      "t": "Do lund ek saath teri chut me daalne ka man kar raha hai, dost ko bula lunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Sachin",
+      "t": "Aaj raat tujhe pregnant kar dunga, pill mat lena kuch bhi baad me.",
+      "from": "boy"
+    },
+    {
+      "u": "Tarunesh",
+      "t": "Teri chut ka bhosda bana ke chhod dunga, phir dubara mat bolna tight hai.",
+      "from": "boy"
+    },
+    {
+      "u": "Umesh",
+      "t": "Kitni badi randi hai tu, ye video dekh ke sabko pata chal gaya ab.",
+      "from": "boy"
+    },
+    {
+      "u": "Vishal",
+      "t": "Tera ex dekh raha hoga, ab tu meri randi ban ke rehgi har roz.",
+      "from": "boy"
+    },
+    {
+      "u": "Wasim",
+      "t": "Mera lund chuswaunga tujhse apne ex ke saamne, sharam haya sab khatam.",
+      "from": "boy"
+    },
+    {
+      "u": "Yogesh",
+      "t": "Teri friend ko bhi tera lund chuswaunga, dono ek dusre ko sikhayengi.",
+      "from": "boy"
+    },
+    {
+      "u": "Zubin",
+      "t": "Dono ko nanga karke ek dusre ki chut chatwaunga, phir main aa ke pelunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Aaditya",
+      "t": "Tujhe aur teri saheli ko threesome me le lunga, teen ghante tak nahi rukunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Balraj",
+      "t": "Pehle teri friend ki gaand marunga, phir teri chut me apna maal bhar dunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Chandan",
+      "t": "Dono ki chut me apna maal bhar dunga itna ki bahar tak beh jaye.",
+      "from": "boy"
+    },
+    {
+      "u": "Dhanraj",
+      "t": "Teri chut itni gili lag rahi hai jaise randi ne paani chhod diya ho abhi.",
+      "from": "boy"
+    },
+    {
+      "u": "Eknath",
+      "t": "Tera pati dekh le kaise teri chut chat raha hu main, wo kuch nahi kar payega.",
+      "from": "boy"
+    },
+    {
+      "u": "Firoz",
+      "t": "Bhabhi, teri chut me apna bada lund daal du kya, devar hun main tera.",
+      "from": "boy"
+    },
+    {
+      "u": "Ganesh",
+      "t": "Main tera devar hun, teri chut faad ke rakh dunga jab bhi akeli milegi.",
+      "from": "boy"
+    },
+    {
+      "u": "Hardik",
+      "t": "Tu saas ki umr ki lagti hai par chut jawan randi jaisi hai, mast maal hai.",
+      "from": "boy"
+    },
+    {
+      "u": "Irfan",
+      "t": "Teri chut me jeeb ghusa ke andar tak chatunga jab tak tu jhad na jaye.",
+      "from": "boy"
+    },
+    {
+      "u": "Jeevan",
+      "t": "Teri chut se pani nikalwa ke saara pi jaunga, taste mast hai tera.",
+      "from": "boy"
+    },
+    {
+      "u": "Keshav",
+      "t": "Aaj teri gaand me bhi lund daal dunga, pehli baar dard hoga par chup rehna.",
+      "from": "boy"
+    },
+    {
+      "u": "Luvkush",
+      "t": "Teri randi chut pe double penetration karunga, do lund ek saath andar.",
+      "from": "boy"
+    },
+    {
+      "u": "Madhav",
+      "t": "Tujhe road pe le jaake chodne ka man kar raha hai, public me randi bana dunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Naveenlal",
+      "t": "Teri chut ki video leak kar dunga agar mujhse baat karne ka style badla.",
+      "from": "boy"
+    },
+    {
+      "u": "Ojas",
+      "t": "Blackmail karke har roz chodunga tujhe, escape nahi hai ab teri.",
+      "from": "boy"
+    },
+    {
+      "u": "Pradeep",
+      "t": "Agar nahi mani to teri chut me bottle ghusa dunga, soch le pehle se.",
+      "from": "boy"
+    },
+    {
+      "u": "Rajan",
+      "t": "Sab dost ko bula ke teri chut community banaenge, har roz naya lund milega tujhe.",
+      "from": "boy"
+    },
+    {
+      "u": "Shivam",
+      "t": "Teri aur teri saheli dono ki chut ek saath faad dunga, tayyar rehna aaj raat.",
+      "from": "boy"
+    },
+    {
+      "u": "Tilak",
+      "t": "Main tujhe aur teri friend ko ek hi bed pe chodunga jab tak dono thak na jayein.",
+      "from": "boy"
+    },
+    {
+      "u": "Ujjwal",
+      "t": "Dono randiyon ki gaand mar ke bhosda bana dunga, video me jo dikha rahi ho wahi haqikat banegi.",
+      "from": "boy"
+    },
+    {
+      "u": "Vedant",
+      "t": "Teri chut me apna lund daalunga aur teri friend ki chut me ungli karte rahunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Waseem",
+      "t": "Ek saath dono ko cuda ke thak jaunga, koi bach nahi payegi is baar.",
+      "from": "boy"
+    },
+    {
+      "u": "Yatin",
+      "t": "Tujhe doggy style me chodunga aur teri friend ka muh me lund de dunga saath me.",
+      "from": "boy"
+    },
+    {
+      "u": "Zaid",
+      "t": "Dono ki chut chat chat ke tumhara saara maal pi jaunga, randi jaisi taste aa rahi hai.",
+      "from": "boy"
+    },
+    {
+      "u": "Akhil",
+      "t": "Teri saheli ko bhi meri randi bana lunga, dono ek hi room me nangi rahogi.",
+      "from": "boy"
+    },
+    {
+      "u": "Bharat",
+      "t": "Tujhpe gangbang karunga, chaar lund ek saath teri chut aur gaand me jayenge.",
+      "from": "boy"
+    },
+    {
+      "u": "Chandanveer",
+      "t": "Teri friend ki gaand tujhe chuswaunga pehle, phir main dono ko pelunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Durgesh",
+      "t": "Dono ko kutiya bana ke peeche se chodunga jab tak cheekh band na ho.",
+      "from": "boy"
+    },
+    {
+      "u": "Eshwar",
+      "t": "Teri chut faad ke teri friend ki chut me thook dunga, ye mera plan hai aaj.",
+      "from": "boy"
+    },
+    {
+      "u": "Faisal",
+      "t": "Ek lund teri chut me aur ek lund teri friend ke muh me ek saath daal dunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Gautam",
+      "t": "Tujhe aur teri behen ko ek saath pel dunga agar dono ek ghar me mili.",
+      "from": "boy"
+    },
+    {
+      "u": "Himanshu",
+      "t": "Dono randi jaisi lag rahi ho, bilkul chodne layak maal ho tum video me.",
+      "from": "boy"
+    },
+    {
+      "u": "Inder",
+      "t": "Teri ex ki chut bhi yaad aa rahi hai, usko bhi chodne ka man kar raha hai.",
+      "from": "boy"
+    },
+    {
+      "u": "Jaswant",
+      "t": "Apni ex ko bula le saath me, main dono ko ek hi bed pe pel dunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Kailash",
+      "t": "Teri purani yaar ki gaand bhi marunga jab wo saamne aayegi, bhool mat jana.",
+      "from": "boy"
+    },
+    {
+      "u": "Laxman",
+      "t": "Tera ex ka lund chuswa ke tujhe dikhaunga ki tu meri randi hai ab.",
+      "from": "boy"
+    },
+    {
+      "u": "Mangal",
+      "t": "Tujhe apne ex ke saamne chod ke randi bana dunga, sharam sab khatam kar dunga.",
+      "from": "boy"
+    },
+    {
+      "u": "Nirmal",
+      "t": "Teri chut me itna bada lund daalunga ki teri cheekh poore mohalle me sunai degi.",
+      "from": "boy"
+    },
+    {
+      "u": "Onkar",
+      "t": "Gadhe jaisa mota lund teri chut me ghusa dunga, dekh lena tu bardasht kar payegi ya nahi.",
+      "from": "boy"
+    },
+    {
+      "u": "Pramod",
+      "t": "Tera poora bhosda bana dunga itne bade lund se ki dubara tight na lage.",
+      "from": "boy"
+    },
+    {
+      "u": "Rupesh",
+      "t": "Aaj teri chut faad ke khoon nikal dunga, itna hard chodunga ki yaad rahega.",
+      "from": "boy"
+    },
+    {
+      "u": "Sohan",
+      "t": "Teri chut itni tight lag rahi hai jaise teri maa ki umar ki randi ho tu.",
+      "from": "boy"
+    },
+    {
+      "u": "Trilok",
+      "t": "Agar mujhe mauka mila to poora parivar chod dunga, koi bachi nahi rahegi.",
+      "from": "boy"
+    },
+    {
+      "u": "Ugrasen",
+      "t": "Teri behen ki chut bhi chodni hai mujhe, jaldi le aana use bhi saath me.",
+      "from": "boy"
+    },
+    {
+      "u": "Vikrant",
+      "t": "Saas aur bahu dono ko ek saath lunga jab ghar me akeli hongi.",
+      "from": "boy"
+    },
+    {
+      "u": "Waman",
+      "t": "Teri chut me muth maar ke video banaunga aur sabko bhej dunga agar nakhre kiye.",
+      "from": "boy"
+    },
+    {
+      "u": "Yoginder",
+      "t": "Randi tu hai poori, teri chut ab public property hai meri nazron me.",
+      "from": "boy"
+    },
+    {
+      "u": "Priya",
+      "t": "Mujhe gadhe jaisa mota lund chahiye, koi dede jo meri chut poori bhar de.",
+      "from": "girl",
+      "img": "https://randomuser.me/api/portraits/med/women/20.jpg"
+    },
+    {
+      "u": "Anjali",
+      "t": "Koi aisa ho jo meri friend aur mujhe ek saath chod de, dono tayyar hain.",
+      "from": "girl",
+      "img": "https://randomuser.me/api/portraits/med/women/21.jpg"
+    },
+    {
+      "u": "Sneha",
+      "t": "Mujhe bhi apne ex ka lund chusna hai, yaad aa raha hai purana taste abhi.",
+      "from": "girl",
+      "img": "https://randomuser.me/api/portraits/med/women/22.jpg"
+    },
+    {
+      "u": "Neha",
+      "t": "Meri saheli ko bhi saath me chudwana hai, hum dono ek hi room me intezaar kar rahe hain.",
+      "from": "girl",
+      "img": "https://randomuser.me/api/portraits/med/women/23.jpg"
+    },
+    {
+      "u": "Pooja",
+      "t": "Dono ko ek hi bade lund se pelwana hai mujhe, share kar lenge saath me.",
+      "from": "girl",
+      "img": "https://randomuser.me/api/portraits/med/women/24.jpg"
+    },
+    {
+      "u": "Kavya",
+      "t": "Pehle meri friend ki chut chatwa, phir mujhe bhi waise hi chod dena please.",
+      "from": "girl"
+    },
+    {
+      "u": "Isha",
+      "t": "Ex aur current dono ka lund ek saath chusungi agar dono mil jayein aaj.",
+      "from": "girl"
+    },
+    {
+      "u": "Divya",
+      "t": "Mere ex ka maal pi ke apni friend ko bhi pilana chahti hun, wild night chahiye.",
+      "from": "girl"
+    },
+    {
+      "u": "Shreya",
+      "t": "Threesome chahiye mujhe aur meri bestie ko, koi serious aaye plan ke saath.",
+      "from": "girl"
+    },
+    {
+      "u": "Tanya",
+      "t": "Koi hum dono randiyon ko ek saath cuda de, hum dono poori raat free hain.",
+      "from": "girl"
+    },
+    {
+      "u": "Maya",
+      "t": "Meri friend ki gaand pehle maro, phir meri chut me apna lund daal dena.",
+      "from": "girl"
+    },
+    {
+      "u": "Naina",
+      "t": "Ex ka lund muh me loongi aur friend ki chut me ungli karungi saath me.",
+      "from": "girl"
+    },
+    {
+      "u": "Komal",
+      "t": "Dono lund ek saath lena hai, ek chut me aur ek muh me, try karo koi.",
+      "from": "girl"
+    },
+    {
+      "u": "Riya",
+      "t": "Meri behen ko bhi saath me chudwana hai, poora group chahiye aaj raat.",
+      "from": "girl"
+    },
+    {
+      "u": "Simran",
+      "t": "Pura group hum dono ko ek room me chode, hum tayyar hain sab kuch ke liye.",
+      "from": "girl"
+    },
+    {
+      "u": "Aditi",
+      "t": "Mujhe gangbang karwana hai, paanch lund ek saath andar lena hai aaj.",
+      "from": "girl"
+    },
+    {
+      "u": "Aishwarya",
+      "t": "Friend ke saamne mujhe cuda de please, usse bhi sharam aani chahiye saath me.",
+      "from": "girl"
+    },
+    {
+      "u": "Bhavna",
+      "t": "Meri chut aur meri friend ki chut ek saath bhar do apne maal se.",
+      "from": "girl"
+    },
+    {
+      "u": "Chitra",
+      "t": "Ex ko bula le, wo bhi mujhe saath me chode, purani yaadein taaza ho jayengi.",
+      "from": "girl"
+    },
+    {
+      "u": "Deepika",
+      "t": "Patidev aur ex dono ka lund chusna hai mujhe, dono ko compare karungi.",
+      "from": "girl"
+    },
+    {
+      "u": "Ekta",
+      "t": "Saas ke saamne chudna hai mujhe aaj, risk hai par mood bana hua hai.",
+      "from": "girl"
+    },
+    {
+      "u": "Garima",
+      "t": "Devar ji, meri friend ko bhi saath me chod do, hum dono ek saath ready hain.",
+      "from": "girl"
+    },
+    {
+      "u": "Heena",
+      "t": "Mujhe kutiya bana ke peeche se chod do, aise hi pasand hai mujhe sabse zyada.",
+      "from": "girl"
+    },
+    {
+      "u": "Indu",
+      "t": "Meri gaand me itna bada lund daalo ki cheekh nikal jaye, dard bhi chalega.",
+      "from": "girl"
+    },
+    {
+      "u": "Jyoti",
+      "t": "Gadhe jaisa mota lund meri chut faad de, main bardasht kar lungi poora.",
+      "from": "girl"
+    },
+    {
+      "u": "Kavita",
+      "t": "Meri chut ka bhosda bana de aaj raat, kal tak dard rahega par chalega.",
+      "from": "girl"
+    },
+    {
+      "u": "Lata",
+      "t": "Itna chodo ki meri chut me khoon tak aa jaye, tab mann bhar jayega mera.",
+      "from": "girl"
+    },
+    {
+      "u": "Meera",
+      "t": "Mujhe randi bana ke public me chod do, sab dekhein to aur maza aayega.",
+      "from": "girl"
+    },
+    {
+      "u": "Nidhi",
+      "t": "Meri chut ki video banao aur chodte raho, main camera ke saamne bhi ready hun.",
+      "from": "girl"
+    },
+    {
+      "u": "Pallavi",
+      "t": "Kitne lund ek saath le sakti hun try karo, record bhi kar lena sab kuch.",
+      "from": "girl"
+    },
+    {
+      "u": "Radha",
+      "t": "Meri muh me apna muth girao, saara pi lungi bina ruke ek boond bhi nahi chhodungi.",
+      "from": "girl"
+    },
+    {
+      "u": "Sapna",
+      "t": "Meri chut chat ke mujhe jaldi jhadwa do, pani nikalne wala hun abhi.",
+      "from": "girl"
+    },
+    {
+      "u": "Tanvi",
+      "t": "Meri gaand chat ke phir andar lund daal do, pehle gila karo ache se.",
+      "from": "girl"
+    },
+    {
+      "u": "Urmila",
+      "t": "Do ungli meri chut me aur do meri gaand me chahiye ek saath, kar sakte ho kya?",
+      "from": "girl"
+    },
+    {
+      "u": "Vidya",
+      "t": "Mujhe aaj hi pregnant kar do please, pill nahi lungi main baad me kuch bhi.",
+      "from": "girl"
+    },
+    {
+      "u": "Yamini",
+      "t": "Meri chut itni gili hai abhi, koi lund dedo jaldi andar daalne ke liye.",
+      "from": "girl"
+    },
+    {
+      "u": "Aarti",
+      "t": "Ex ka lund yaad aa raha hai, chusne ka man kar raha hai poora din se.",
+      "from": "girl"
+    },
+    {
+      "u": "Bindu",
+      "t": "Friend ke boyfriend ka lund bhi lena hai, dono ek saath try karenge aaj.",
+      "from": "girl"
+    },
+    {
+      "u": "Charu",
+      "t": "Dono bhaiyon ka lund ek saath chusungi, ghar pe koi nahi hai aaj sham ko.",
+      "from": "girl"
+    },
+    {
+      "u": "Disha",
+      "t": "Meri chut me poora haath daal do koi, dekhte hain kitna andar jaata hai.",
+      "from": "girl"
+    },
+    {
+      "u": "Esha",
+      "t": "Itna hard cuda do ki teen din chal na paun, ye challenge hai tumhare liye.",
+      "from": "girl"
+    },
+    {
+      "u": "Fatima",
+      "t": "Meri tight chut faad ke rakh do apne lode se, dard chahiye mujhe aaj.",
+      "from": "girl"
+    },
+    {
+      "u": "Gita",
+      "t": "Tera maal meri muh me girao aur friend ki chut pe bhi, dono jagah bhar do.",
+      "from": "girl"
+    },
+    {
+      "u": "Hina",
+      "t": "Hum dono nangi ho jayein, koi aa ke dono ko ek saath chod de abhi.",
+      "from": "girl"
+    },
+    {
+      "u": "Ishita",
+      "t": "Meri ex ki chut bhi chatni hai mujhe, lesbian mood hai thoda aaj.",
+      "from": "girl"
+    },
+    {
+      "u": "Jaya",
+      "t": "Meri lesbian friend ke saath tum dono aake chodo, teen ka scene chahiye.",
+      "from": "girl"
+    },
+    {
+      "u": "Kiran",
+      "t": "Meri chut pe thook ke phir lund daal do, gila hone ke baad hi andar aana.",
+      "from": "girl"
+    },
+    {
+      "u": "Lakshmi",
+      "t": "Gaand me lund aur chut me ungli dono ek saath chahiye, ek minute bhi wait nahi.",
+      "from": "girl"
+    },
+    {
+      "u": "Monika",
+      "t": "Meri randi friend ko bhi tera lund chuswa, phir dono ko pel dena saath me.",
+      "from": "girl"
+    },
+    {
+      "u": "Swati",
+      "t": "Sab milke meri chut community banao, har roz naya experience chahiye mujhe.",
+      "from": "girl"
+    }
+  ]
+}

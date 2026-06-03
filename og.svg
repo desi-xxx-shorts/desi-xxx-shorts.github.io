@@ -1,0 +1,16 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0A0A0A"/>
+      <stop offset="1" stop-color="#1A0A1A"/>
+    </linearGradient>
+    <linearGradient id="txt" x1="260" y1="220" x2="920" y2="430" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF0050"/>
+      <stop offset="1" stop-color="#25F4EE"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <text x="120" y="280" fill="url(#txt)" font-size="96" font-family="Arial, Helvetica, sans-serif" font-weight="800">DESI REELS</text>
+  <text x="120" y="360" fill="#FFFFFF" font-size="40" font-family="Arial, Helvetica, sans-serif" opacity="0.92">Trending Short Videos India</text>
+  <text x="120" y="430" fill="#A3A3A3" font-size="28" font-family="Arial, Helvetica, sans-serif">Fast Mobile Experience</text>
+</svg>
