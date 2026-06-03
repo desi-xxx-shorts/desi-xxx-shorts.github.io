@@ -335,6 +335,9 @@
     const PROMO_AD_FALLBACK_MS=8000;
     let promoScrollLock=null,scrollSettleTimer=null,feedWindowScrollTimer=null;
     let scrollStepLock=false,scrollSnapFree=false,wheelStepLock=false;
+    let dragStartY=null,dragStartScroll=null,dragCurrentY=null,dragVelocity=0,dragStartTime=null,isDragging=false;
+    const SWIPE_VELOCITY_THRESHOLD=0.4;
+    const SWIPE_DISTANCE_THRESHOLD=0.38;
     let promoReadySlots={download:'promoAdWarmA',share:'promoAdWarmB'};
     const promoFallbackTimers={};
     const adCreativeQueue=[];
@@ -893,10 +896,10 @@
     }
     function clampFeedScroll(){
       const app=document.getElementById('app');
-      if(!app||promoScrollLock||scrollStepLock||scrollSnapFree||!feedItems.length)return;
+      if(!app||promoScrollLock||scrollStepLock||scrollSnapFree||isDragging||!feedItems.length)return;
       const h=reelHeightPx();
-      const minTop=Math.max(0,(currentIndex-1)*h);
-      const maxTop=Math.min((feedItems.length-1)*h,(currentIndex+1)*h);
+      const minTop=Math.max(0,(currentIndex-3)*h);
+      const maxTop=Math.min((feedItems.length-1)*h,(currentIndex+3)*h);
       if(app.scrollTop>maxTop)app.scrollTop=maxTop;
       else if(app.scrollTop<minTop)app.scrollTop=minTop;
     }
@@ -931,11 +934,16 @@
       currentIndex=Math.max(0,Math.min(maxIndex,index));
       scrollStepLock=true;
       if(opts.free)scrollSnapFree=true;
-      app.scrollTop=currentIndex*h;
+      const targetTop=currentIndex*h;
+      if(opts.smooth){
+        app.scrollTo({top:targetTop,behavior:'smooth'});
+      }else{
+        app.scrollTop=targetTop;
+      }
       syncFeedWindow();
       if(!opts.skipBuffer)updateVideoBuffer();
       const unlock=()=>{scrollStepLock=false;scrollSnapFree=false};
-      if(opts.smooth)setTimeout(unlock,400);
+      if(opts.smooth)setTimeout(unlock,360);
       else requestAnimationFrame(()=>requestAnimationFrame(unlock));
     }
     function scrollToCurrent(smooth=false){
@@ -951,7 +959,7 @@
       applyReelIndexChange(next);
       const app=document.getElementById('app');
       app.scrollTo({top:next*reelHeightPx(),behavior:'smooth'});
-      setTimeout(()=>{scrollStepLock=false;wheelStepLock=false},380);
+      setTimeout(()=>{scrollStepLock=false;wheelStepLock=false},220);
     }
 
     if(localStorage.getItem('ageVerified')){
@@ -1670,17 +1678,47 @@
       requestAnimationFrame(()=>{scrollStepLock=false});
     }
 
+    function decideSnapOrScrollBack(distanceRatio,velocity){
+      const reelHeight=reelHeightPx();
+      if(!reelHeight||!feedItems.length)return;
+      const maxIndex=feedItems.length-1;
+      let direction=0;
+      const speed=Math.abs(velocity);
+      const dist=Math.abs(distanceRatio);
+      const isFastSwipe=speed>SWIPE_VELOCITY_THRESHOLD;
+      const isPastThreshold=dist>SWIPE_DISTANCE_THRESHOLD;
+      if(distanceRatio>0&&isPastThreshold)direction=1;
+      else if(distanceRatio<0&&isPastThreshold)direction=-1;
+      else if(distanceRatio>0&&isFastSwipe)direction=1;
+      else if(distanceRatio<0&&isFastSwipe)direction=-1;
+      if(direction!==0){
+        const nextIndex=Math.max(0,Math.min(maxIndex,currentIndex+direction));
+        if(nextIndex!==currentIndex){
+          scrollStepLock=true;
+          wheelStepLock=true;
+          applyReelIndexChange(nextIndex);
+          const app=document.getElementById('app');
+          app.scrollTo({top:nextIndex*reelHeight,behavior:'smooth'});
+          setTimeout(()=>{scrollStepLock=false;wheelStepLock=false;},220);
+        }else{
+          scrollToCurrent(true);
+        }
+      }else{
+        scrollToCurrent(true);
+      }
+    }
+
     function setupScrollListener(){
       if(scrollListenerBound)return;
       const app=document.getElementById('app');
       const onSettle=()=>syncReelIndexFromScroll();
       const onScroll=()=>{
         if(promoScrollLock)return;
-        clampFeedScroll();
+        if(!isDragging)clampFeedScroll();
         clearTimeout(feedWindowScrollTimer);
         feedWindowScrollTimer=setTimeout(syncFeedWindow,40);
         clearTimeout(scrollSettleTimer);
-        scrollSettleTimer=setTimeout(onSettle,120);
+        scrollSettleTimer=setTimeout(onSettle,80);
       };
       app.addEventListener('wheel',(e)=>{
         if(promoScrollLock||scrollSnapFree)return;
@@ -1694,6 +1732,46 @@
       }else{
         app.addEventListener('scroll',onScroll,{passive:true});
       }
+      function onDragStart(y){
+        if(promoScrollLock||scrollStepLock)return;
+        dragStartY=y;
+        dragCurrentY=y;
+        dragStartScroll=app.scrollTop;
+        dragStartTime=Date.now();
+        dragVelocity=0;
+        isDragging=true;
+        scrollSnapFree=true;
+      }
+      function onDragMove(y){
+        if(!isDragging||promoScrollLock)return;
+        dragCurrentY=y;
+        const deltaY=dragStartY-y;
+        const newScrollTop=dragStartScroll+deltaY;
+        app.scrollTop=newScrollTop;
+        const elapsed=(Date.now()-dragStartTime)/1000;
+        if(elapsed>0)dragVelocity=deltaY/(reelHeightPx()*elapsed);
+      }
+      function onDragEnd(){
+        if(!isDragging)return;
+        isDragging=false;
+        scrollSnapFree=false;
+        const deltaY=dragStartY-dragCurrentY;
+        const distanceRatio=deltaY/reelHeightPx();
+        const elapsed=(Date.now()-dragStartTime)/1000;
+        const velocity=distanceRatio/elapsed;
+        decideSnapOrScrollBack(distanceRatio,velocity);
+        dragStartY=null;
+        dragCurrentY=null;
+      }
+      app.addEventListener('touchstart',(e)=>{onDragStart(e.touches[0].clientY);},{passive:true});
+      app.addEventListener('touchmove',(e)=>{if(isDragging)e.preventDefault();onDragMove(e.touches[0].clientY);},{passive:false});
+      app.addEventListener('touchend',()=>{onDragEnd();},{passive:true});
+      app.addEventListener('touchcancel',()=>{onDragEnd();},{passive:true});
+      let mouseDown=false;
+      app.addEventListener('mousedown',(e)=>{if(e.button===0){mouseDown=true;onDragStart(e.clientY);}});
+      app.addEventListener('mousemove',(e)=>{if(mouseDown)onDragMove(e.clientY);});
+      app.addEventListener('mouseup',()=>{if(mouseDown){mouseDown=false;onDragEnd();}});
+      app.addEventListener('mouseleave',()=>{if(mouseDown){mouseDown=false;onDragEnd();}});
       scrollListenerBound=true;
     }
 
