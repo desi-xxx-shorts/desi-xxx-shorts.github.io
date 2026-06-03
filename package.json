@@ -3,6 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build:seo": "node scripts/build-seo.mjs"
+    "build:seo": "node scripts/build-seo.mjs",
+    "dev": "npx --yes serve . -l 5173 --no-clipboard",
+    "start": "npm run dev",
+    "check:cdn": "node scripts/check-cdn-range.mjs"
   }
 }

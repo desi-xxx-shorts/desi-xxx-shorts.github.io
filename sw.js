@@ -1,4 +1,4 @@
-const CACHE = 'desi-reels-v2';
+const CACHE = 'desi-reels-v3';
 
 self.addEventListener('install', (event) => {
   event.waitUntil(self.skipWaiting());

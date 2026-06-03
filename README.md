@@ -26,6 +26,16 @@ Manual: `npm run build:seo`
 
 Per-video meta in the app is built in the browser from `comments-pool.json` (no large SEO JSON download).
 
+## Local testing
+
+From the project folder:
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:5173](http://localhost:5173) (use this URL, not `file://`, so JSON catalogs load).
+
 ## Deploy
 
 GitHub Pages repo name:
@@ -156,4 +166,20 @@ Avoid on GitHub Pages:
 - **Desi tab (default):** only `videos-desi.json` (~9 KB gzipped).
 - **New / All tabs:** loads `videos-scraped2.json` + first chunk only (~460 KB gzipped). More `videos-scraped1-XX.json` chunks load only when you scroll near the end (saves ~3.5 MB if you do not scroll far).
 - **`sw.js`:** caches JSON on the device — repeat visits load lists much faster (often under ~0.1 s for cached desi data).
+- **IndexedDB:** catalogs are also stored locally for offline-fast reloads.
 - Do not deploy a single `videos.json`; data is split to keep first load fast.
+
+### App features (playback)
+
+- **Resume position** when swiping back (session + `localStorage`).
+- **Share / URL** with timestamp: `?v=123&t=45`.
+- **Low data** button (top-left 📉): disables preloading.
+- **Double-tap center** = like; **double-tap sides** = ±10s seek.
+- **Keyboard:** ↑/↓ or J/K = next/prev reel, Space = pause/play.
+- **Failed videos:** retry once (same signed URL), then show “Video not found” and auto-skip to next reel.
+- **HLS** optional via `hlsUrl` in catalog (see `docs/PERFORMANCE.md`).
+- **Google Form analytics:** one `site_entry` submit per browser tab session (first app load only).
+
+### CDN / encoding
+
+See [docs/PERFORMANCE.md](docs/PERFORMANCE.md). Check range support: `npm run check:cdn`.
