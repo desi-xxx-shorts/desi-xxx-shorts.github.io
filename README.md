@@ -16,23 +16,15 @@ Ultra-fast single-page reels video website.
 - `sitemap.xml` - Sitemap index (main + scraped1 chunks + scraped2)
 - `manifest.json` - PWA manifest
 - `robots.txt` - SEO robots file
-- `sitemap.xml` - SEO sitemap (regenerate with build script)
+- `.github/workflows/seo-on-deploy.yml` - Auto-runs `build:seo` on push
 
-## SEO build
+## SEO (automatic)
 
-After you change `videos-desi.json`, `videos-scraped2.json`, or `comments-pool.json`:
+On push to `main`, the workflow runs `npm run build:seo` and commits `sitemap*.xml`, `seo-crawl.html`, `seo-keywords-pool.json`.
 
-```bash
-npm run build:seo
-```
+Manual: `npm run build:seo`
 
-This updates:
-
-- `sitemap.xml` — home, `seo-crawl.html`, and every `?v=id` URL (desi + scraped2)
-- `seo-crawl.html` — full-text page for Google (not loaded by the app)
-- Per-video meta in the app is computed in the browser from `comments-pool.json` + `seo-keywords-pool.json` (no large SEO JSON)
-
-The live app also updates `document.title`, Open Graph tags, canonical URL, and VideoObject/Comment JSON-LD when you scroll or open `?v=123`.
+Per-video meta in the app is built in the browser from `comments-pool.json` (no large SEO JSON download).
 
 ## Deploy
 
@@ -153,13 +145,11 @@ Avoid on GitHub Pages:
 - Interstitial
 - Full page redirect
 
-**Pages source:** Deploy from a branch (`main` / `master`, folder `/`).
+**GitHub Pages:** branch `main`, folder `/`.
 
-**One workflow only:** `.github/workflows/seo-on-deploy.yml` — on push it runs `npm run build:seo` and commits `sitemap*.xml`, `seo-crawl.html`, `seo-keywords-pool.json`. Enable **Settings → Actions → Workflow permissions → Read and write**.
+**Actions:** Settings → Actions → General → **Read and write** workflow permissions (required for auto SEO commits).
 
-You do **not** need `deploy-pages.yml` (that is for “GitHub Actions” as the Pages source, not branch deploy).
-
-Manual SEO locally: `npm run build:seo`
+**Contributions:** Commits use `gk74601234@gmail.com` — verify that email on the desi-xxx-shorts account.
 
 ### Video loading (no backend)
 
